@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Caliburn.Micro;
+using ClearApplicationFoundation.Extensions;
 using ClearApplicationFoundation.ViewModels;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -10,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace ClearApplicationFoundation
 {
@@ -32,9 +34,7 @@ namespace ClearApplicationFoundation
 
         protected override void Configure()
         {
-            AssemblySource.Instance.AddRange(PublishSingleFileBypassAssemblies);
-
-
+         
             var builder = new ContainerBuilder();
 
             LoadModules(builder);
@@ -43,20 +43,23 @@ namespace ClearApplicationFoundation
 
             SetupLogging();
 
-           
+        }
+
+        protected override IEnumerable<Assembly> SelectAssemblies()
+        {
+            var assemblies =  base.SelectAssemblies().ToList();
+
+            assemblies.Add(Assembly.GetAssembly(typeof(FoundationBootstrapper)));
+
+            return assemblies.LoadModuleAssemblies();
         }
 
         protected virtual void LoadModules(ContainerBuilder builder)
         {
             builder.RegisterModule<FoundationModule>();
+            builder.LoadModuleAssemblies();
         }
 
-
-        /// <summary>
-        /// When your application is deployed using PublishSingleFile under .NET5+, override
-        /// this to explicitly list the assemblies that MEF needs to search exports for.
-        /// </summary>
-        protected virtual IEnumerable<Assembly?> PublishSingleFileBypassAssemblies => Enumerable.Empty<Assembly>();
 
         protected virtual void SetupLogging()
         {
@@ -83,7 +86,7 @@ namespace ClearApplicationFoundation
 
             Logger = Container!.Resolve<ILogger<FoundationBootstrapper>>();
 
-            Logger.LogDebug("I'm alive!");
+            Logger.LogDebug($"Application logging has been configured.  Writing logs to '{logPath}'");
         }
 
         protected override object GetInstance(Type service, string key)
@@ -98,9 +101,37 @@ namespace ClearApplicationFoundation
             return (Container?.Resolve(type) as IEnumerable<object>)!;
         }
 
+
         protected override void BuildUp(object instance)
         {
             Container?.InjectProperties(instance);
+        }
+
+        /// <summary>
+        /// Adds the Frame to the Grid control on the ShellView
+        /// </summary>
+        /// <param name="frame"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        private void AddFrameToMainWindow(Frame frame)
+        {
+            Logger.LogInformation("Adding Frame to ShellView grid control.");
+
+            var mainWindow = Application.MainWindow;
+            if (mainWindow == null)
+            {
+                throw new NullReferenceException("'Application.MainWindow' is null.");
+            }
+
+
+            if (mainWindow.Content is not Grid grid)
+            {
+                throw new NullReferenceException("The grid on 'Application.MainWindow' is null.");
+            }
+
+            Grid.SetRow(frame, 1);
+            Grid.SetColumn(frame, 0);
+            Panel.SetZIndex(frame, 0);
+            grid.Children.Add(frame);
         }
     }
 }

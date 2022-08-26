@@ -12,7 +12,7 @@ using MediatR;
 
 namespace ClearApplicationFoundation.Demo.ViewModels
 {
-    public class HomeViewModel : Screen, IMainWindow
+    public class HomeViewModel : Conductor<ITab>.Collection.OneActive, IMainWindow
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediator _mediator;
@@ -24,17 +24,33 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             set => Set(ref _title, value);
         }
 
+        public HomeViewModel()
+        {
+            
+        }
+
         public HomeViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator)
         {
             _eventAggregator = eventAggregator;
             _mediator = mediator;
             logger.LogDebug("HomeViewModel ctor called!");
-            //Title = "Welcome to Caliburn.Micro";
         }
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            Title = await _mediator.Send(new TitleQuery());
+            Title = await _mediator.Send(new TitleQuery(), cancellationToken);
+
+
+            var tabs = IoC.GetAll<ITab>();
+
+            foreach (var tab in tabs)
+            {
+                await ActivateItemAsync(tab, cancellationToken);
+            }
+
+            await ActivateItemAsync(Items[0], cancellationToken);
+
+           
         }
     }
 }

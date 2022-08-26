@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Autofac;
+using Autofac.Core;
 using Caliburn.Micro;
+using ClearApplicationFoundation.Extensions;
 
-namespace ClearApplicationFoundation.Demo
+namespace ClearApplicationFoundation.Demo;
+
+internal class Bootstrapper : FoundationBootstrapper
 {
-    internal class Bootstrapper : FoundationBootstrapper
+
+    protected override void SetupLogging()
     {
-
-        protected override IEnumerable<Assembly?> PublishSingleFileBypassAssemblies
-        {
-            get { yield return Assembly.GetAssembly(typeof(FoundationBootstrapper)); }
-        }
-
-        protected override void SetupLogging()
-        {
-            SetupLogging(Path.Combine(Environment.CurrentDirectory, "Logs\\demo.log"));
-        }
-
-        protected override void LoadModules(ContainerBuilder builder)
-        {
-            base.LoadModules(builder);
-
-            builder.RegisterModule<DemoModule>();
-        }
+        SetupLogging("d:\\temp\\ClearApplication.Demo\\logs\\demo.log");
     }
+
+    protected override void LoadModules(ContainerBuilder builder)
+    {
+        base.LoadModules(builder);
+
+        builder.RegisterModule<DemoModule>();
+    }
+
+  
 }

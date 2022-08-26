@@ -2,6 +2,11 @@
 using Autofac.Builder;
 using Autofac.Features.Scanning;
 using FluentValidation;
+using System.IO;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace ClearApplicationFoundation.Extensions
@@ -22,5 +27,31 @@ namespace ClearApplicationFoundation.Extensions
                 .Where(t => typeof(IValidator).IsAssignableFrom(t))
                 .ExternallyOwned();
         }
+
+     
+        public static void LoadModuleAssemblies(this ContainerBuilder builder, string searchPattern = "*.Module.dll", SearchOption searchOption = SearchOption.TopDirectoryOnly)
+        {
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            var moduleAssemblies = Directory.GetFiles(path, searchPattern, searchOption).Select(Assembly.LoadFrom);
+
+            builder.RegisterAssemblyModules(moduleAssemblies.ToArray());
+
+            //foreach (var assembly in Directory.GetFiles(path, searchPattern, searchOption).Select(Assembly.LoadFrom))
+            //{
+            //    builder.RegisterAssemblyModules(assembly);
+            //}
+        }
+
+        public static IEnumerable<Assembly> LoadModuleAssemblies(this IEnumerable<Assembly> selectedAssemblies, string searchPattern = "*.Module.dll", SearchOption searchOption = SearchOption.TopDirectoryOnly)
+        {
+            var assemblies = selectedAssemblies.ToList();
+            var moduleAssemblies = Directory.GetFiles(Environment.CurrentDirectory, searchPattern, searchOption)
+                .Select(Assembly.LoadFrom);
+
+            assemblies.AddRange(moduleAssemblies);
+
+            return assemblies;
+        }
+ 
     }
 }
