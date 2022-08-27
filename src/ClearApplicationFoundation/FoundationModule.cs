@@ -4,6 +4,8 @@ using MediatR.Extensions.Autofac.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog.Extensions.Logging;
 using System.Linq;
+using ClearApplicationFoundation.Framework;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ClearApplicationFoundation
 {
@@ -28,6 +30,10 @@ namespace ClearApplicationFoundation
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().InstancePerLifetimeScope();
 
             builder.RegisterMediatR(typeof(App).Assembly);
+
+            var frameSet = new FrameSet();
+            builder.RegisterInstance(frameSet);
+            builder.RegisterInstance(frameSet.NavigationService).As<INavigationService>();
 
 
             var loggerFactory = new LoggerFactory();

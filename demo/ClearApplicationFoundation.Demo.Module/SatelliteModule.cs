@@ -19,16 +19,16 @@ namespace ClearApplicationFoundation.Demo.Module
         {
             // _logger.LogInformation($"Loading '{nameof(SatelliteModule)}' module");
 
-            builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-                .Where(type => type.Name.EndsWith("ViewModel"))
-                .AsSelf()
-                .InstancePerDependency();
+            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
+            //    .Where(type => type.Name.EndsWith("ViewModel"))
+            //    .AsSelf()
+            //    .InstancePerDependency();
 
 
-            builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-                .Where(type => type.Name.EndsWith("View"))
-                .AsSelf()
-                .InstancePerDependency();
+            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
+            //    .Where(type => type.Name.EndsWith("View"))
+            //    .AsSelf()
+            //    .InstancePerDependency();
 
             builder.RegisterType<Tab1ViewModel>().As<ITab>().InstancePerDependency();
             builder.RegisterType<Tab2ViewModel>().As<ITab>().InstancePerDependency();

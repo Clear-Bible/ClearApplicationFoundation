@@ -19,16 +19,16 @@ namespace ClearApplicationFoundation.Demo
         protected override void Load(ContainerBuilder builder)
         {
 
-            builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-                .Where(type => type.Name.EndsWith("ViewModel"))
-                .AsSelf()
-                .InstancePerDependency();
+            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
+            //    .Where(type => type.Name.EndsWith("ViewModel"))
+            //    .AsSelf()
+            //    .InstancePerDependency();
 
-            //  register views
-            builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-                .Where(type => type.Name.EndsWith("View"))
-                .AsSelf()
-                .InstancePerDependency();
+            ////  register views
+            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
+            //    .Where(type => type.Name.EndsWith("View"))
+            //    .AsSelf()
+            //    .InstancePerDependency();
 
             builder.RegisterType<HomeViewModel>().As<IMainWindow>().InstancePerDependency();
 

@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
-using MaterialDesignThemes.Wpf;
+//using MaterialDesignThemes.Wpf;
 
 namespace ClearApplicationFoundation.Framework.Converters;
 
-[ValueConversion(typeof(string), typeof(PackIconKind))]
-public class StringToMaterialDesignKindConverter : IValueConverter
-{
-    public object Convert(object value, Type targetType, object parameter,
-        System.Globalization.CultureInfo culture)
-    {
-        var kind = (string)value;
-        return Enum.Parse<PackIconKind>(kind);
-    }
+//[ValueConversion(typeof(string), typeof(PackIconKind))]
+//public class StringToMaterialDesignKindConverter : IValueConverter
+//{
+//    public object Convert(object value, Type targetType, object parameter,
+//        System.Globalization.CultureInfo culture)
+//    {
+//        var kind = (string)value;
+//        return Enum.Parse<PackIconKind>(kind);
+//    }
 
-    public object ConvertBack(object value, Type targetType, object parameter,
-        System.Globalization.CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-}
+//    public object ConvertBack(object value, Type targetType, object parameter,
+//        System.Globalization.CultureInfo culture)
+//    {
+//        throw new NotImplementedException();
+//    }
+//}
 
 [ValueConversion(typeof(Enum), typeof(Array))]
 public class EnumToValuesConverter : IValueConverter

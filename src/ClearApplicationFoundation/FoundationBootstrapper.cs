@@ -10,8 +10,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using ClearApplicationFoundation.Framework;
 
 namespace ClearApplicationFoundation
 {
@@ -26,9 +28,86 @@ namespace ClearApplicationFoundation
             Initialize();
         }
 
+
+        protected INavigationService? NavigationService { get; private set; }
         protected override async void OnStartup(object sender, StartupEventArgs e)
         {
             await DisplayRootViewForAsync<ShellViewModel>();
+
+            Application.Current.MainWindow?.Hide();
+            AddFrameToMainWindow();
+
+            ConfigureNavigationService();
+
+            await NavigateToMainWindow();
+        }
+
+        protected virtual async Task NavigateToMainWindow()
+        {
+            Application.Current.MainWindow?.Show();
+            NavigateToViewModel<PlaceHolderMainViewModel>();
+            await Task.CompletedTask;
+        }
+
+        protected async Task ShowStartupDialog<TStartupDialogViewModel, TNavigateToViewModel>()
+            where TStartupDialogViewModel : notnull
+            where TNavigateToViewModel : notnull
+        {
+
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow == null)
+            {
+                Application.Current.Shutdown(-101);
+            }
+
+            if (mainWindow!.Visibility == Visibility.Visible)
+            {
+                mainWindow!.Hide();
+            }
+
+            if (Container == null)
+            {
+                Application.Current.Shutdown(-100);
+            }
+
+            var windowManager = Container?.Resolve<IWindowManager>();
+            var startupViewModel = Container!.Resolve<TStartupDialogViewModel>();
+
+            Application.Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
+
+      
+
+            var result = await windowManager?.ShowDialogAsync(startupViewModel)!;
+
+            if (result.HasValue && result.Value)
+            {
+                mainWindow.ShowActivated = true;
+                mainWindow.ShowInTaskbar = true;
+                mainWindow.WindowState = WindowState.Normal;
+                mainWindow!.Show();
+                mainWindow.Topmost = true;
+                NavigateToViewModel<TNavigateToViewModel>();
+            }
+            else
+            {
+                Application.Current.Shutdown(-102);
+            }
+        }
+
+        private void ConfigureNavigationService()
+        {
+            NavigationService = Container?.Resolve<INavigationService>();
+
+            if (NavigationService == null)
+            {
+                throw new NullReferenceException(
+                    "'NavigationService' is null. Please ensure the 'FoundationModule' has been loaded by Autofac.");
+            }
+        }
+
+        protected void NavigateToViewModel<TViewModel>()
+        {
+            NavigationService.NavigateToViewModel<TViewModel>();
         }
 
 
@@ -112,10 +191,20 @@ namespace ClearApplicationFoundation
         /// </summary>
         /// <param name="frame"></param>
         /// <exception cref="NullReferenceException"></exception>
-        private void AddFrameToMainWindow(Frame frame)
+        private void AddFrameToMainWindow()
         {
             Logger.LogInformation("Adding Frame to ShellView grid control.");
 
+            var frameSet = Container?.Resolve<FrameSet>();
+
+            if (frameSet == null)
+            {
+                throw new NullReferenceException("'FrameSet' is null. Please ensure the 'FoundationModule' has been load by Autofac.");
+            }
+
+            var frame = frameSet.Frame;
+            
+          
             var mainWindow = Application.MainWindow;
             if (mainWindow == null)
             {

@@ -3,11 +3,11 @@
 namespace ClearApplicationFoundation.Demo.Views
 {
     /// <summary>
-    /// Interaction logic for HomeView.xaml
+    /// Interaction logic for StartupView.xaml
     /// </summary>
-    public partial class HomeView
+    public partial class StartupView
     {
-        public HomeView()
+        public StartupView()
         {
             InitializeComponent();
         }
