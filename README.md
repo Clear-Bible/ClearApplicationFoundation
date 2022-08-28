@@ -1,1 +1,1 @@
-# ClearApplicationFoundation"# ClearApplicationFoundation" 
+# ClearApplicationFoundation
