@@ -3,20 +3,17 @@
                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                          xmlns:windows="clr-namespace:ClearApplicationFoundation.Windows"
                           mc:Ignorable="d" 
                           d:DesignHeight="450" d:DesignWidth="800"
                           WindowStartupLocation ="CenterScreen"
                           Background="White"
                           Visibility="Hidden"
+                          WindowState="Minimized"
                           Title="ShellView">
-    <!--ShowActivated="False"
-    ShowInTaskbar="False"
-    WindowState="Minimized"-->
     <Grid>
         <Grid.RowDefinitions>
            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-       <!--Frame will be into Grid.Row="0" injected during the application startup-->
+       <!--Frame will be added into Grid.Row="0" during the application startup-->
     </Grid>
 </Window>

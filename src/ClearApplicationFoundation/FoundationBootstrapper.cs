@@ -49,7 +49,7 @@ namespace ClearApplicationFoundation
             await Task.CompletedTask;
         }
 
-        protected async Task ShowStartupDialog<TStartupDialogViewModel, TNavigateToViewModel>()
+        protected virtual async Task ShowStartupDialog<TStartupDialogViewModel, TNavigateToViewModel>()
             where TStartupDialogViewModel : notnull
             where TNavigateToViewModel : notnull
         {
@@ -62,7 +62,7 @@ namespace ClearApplicationFoundation
 
             if (mainWindow!.Visibility == Visibility.Visible)
             {
-                mainWindow!.Hide();
+                mainWindow.Hide();
             }
 
             if (Container == null)
@@ -73,19 +73,27 @@ namespace ClearApplicationFoundation
             var windowManager = Container?.Resolve<IWindowManager>();
             var startupViewModel = Container!.Resolve<TStartupDialogViewModel>();
 
-            Application.Current.ShutdownMode = ShutdownMode.OnLastWindowClose;
 
-      
+            // Ensure the application will actually close when the main app widow is closed.
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             var result = await windowManager?.ShowDialogAsync(startupViewModel)!;
 
             if (result.HasValue && result.Value)
             {
-                mainWindow.ShowActivated = true;
-                mainWindow.ShowInTaskbar = true;
-                mainWindow.WindowState = WindowState.Normal;
-                mainWindow!.Show();
-                mainWindow.Topmost = true;
+               
+                if (!mainWindow.IsVisible)
+                {
+                    mainWindow.Show();
+                }
+
+                // NB: It is important to change WindowState after the MainWindow has been shown.
+                //     Otherwise it will fall be hind all of the open apps.
+                if (mainWindow.WindowState == WindowState.Minimized)
+                {
+                    mainWindow.WindowState = WindowState.Normal;
+                }
+
                 NavigateToViewModel<TNavigateToViewModel>();
             }
             else
@@ -107,7 +115,7 @@ namespace ClearApplicationFoundation
 
         protected void NavigateToViewModel<TViewModel>()
         {
-            NavigationService.NavigateToViewModel<TViewModel>();
+            NavigationService?.NavigateToViewModel<TViewModel>();
         }
 
 
@@ -189,11 +197,10 @@ namespace ClearApplicationFoundation
         /// <summary>
         /// Adds the Frame to the Grid control on the ShellView
         /// </summary>
-        /// <param name="frame"></param>
         /// <exception cref="NullReferenceException"></exception>
         private void AddFrameToMainWindow()
         {
-            Logger.LogInformation("Adding Frame to ShellView grid control.");
+            Logger?.LogInformation("Adding Frame to ShellView grid control.");
 
             var frameSet = Container?.Resolve<FrameSet>();
 
