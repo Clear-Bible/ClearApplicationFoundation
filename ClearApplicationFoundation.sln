@@ -13,7 +13,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{0BAAC8C2-A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClearApplicationFoundation.Demo", "demo\ClearApplicationFoundation.Demo\ClearApplicationFoundation.Demo.csproj", "{290526B2-11B7-4AC3-949A-9068B6F66CA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClearApplicationFoundation.Demo.Module", "demo\ClearApplicationFoundation.Demo.Module\ClearApplicationFoundation.Demo.Module.csproj", "{9C19E7DB-0A8B-43E5-92E3-860AA8AB24C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClearApplicationFoundation.Demo.Module", "demo\ClearApplicationFoundation.Demo.Module\ClearApplicationFoundation.Demo.Module.csproj", "{9C19E7DB-0A8B-43E5-92E3-860AA8AB24C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Item", "Solution Item", "{4CF0FDD8-F495-4636-A4BE-FB2348221ACE}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.md = nuget.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
