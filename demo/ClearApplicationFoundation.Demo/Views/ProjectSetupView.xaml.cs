@@ -17,7 +17,7 @@ namespace ClearApplicationFoundation.Demo.Views
     /// <summary>
     /// Interaction logic for ProjectSetupView.xaml
     /// </summary>
-    public partial class ProjectSetupView : Window
+    public partial class ProjectSetupView
     {
         public ProjectSetupView()
         {

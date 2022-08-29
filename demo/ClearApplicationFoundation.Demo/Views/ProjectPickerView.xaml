@@ -1,16 +1,15 @@
-﻿<Window
-    x:Class="ClearDashboard.Wpf.Views.LandingView"
+﻿<UserControl
+    x:Class="ClearApplicationFoundation.Demo.Views.ProjectPickerView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cal="http://www.caliburnproject.org"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Some Title Goes Here"
+    xmlns:converters="clr-namespace:ClearApplicationFoundation.Framework.Converters;assembly=ClearApplicationFoundation"
     d:DesignHeight="450"
     d:DesignWidth="800"
     Background="{DynamicResource MaterialDesignPaper}"
-    FlowDirection="{Binding WindowFlowDirection}"
     FontFamily="{DynamicResource MaterialDesignFont}"
     TextElement.FontSize="13"
     TextElement.FontWeight="Regular"
@@ -18,6 +17,25 @@
     TextOptions.TextFormattingMode="Ideal"
     TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+
+        <Style x:Key="WorkflowButtonStyle" TargetType="Button">
+            <!--<Setter Property="Foreground" Value="Black" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="Margin" Value="10 0"></Setter>
+            <Setter Property="Width" Value="250" />
+            <Setter Property="Height" Value="75" />
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="Padding" Value="8,8"></Setter>-->
+        </Style>
+
+        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -42,11 +60,51 @@
                 Text="Search Terms go here" />
         </StackPanel>
 
-        <Button
-            Grid.Row="1"
-            Grid.Column="1"
-            Width="200"
-            Content="Create New Project" />
+
+        <StackPanel
+        Grid.Row="1"
+        Grid.Column="1"
+        Margin="10,10"
+        HorizontalAlignment="Right"
+        Orientation="Horizontal">
+            <Button
+            x:Name="MoveBackwards"
+            Margin="5,5,5,5"
+            cal:Message.Attach="MoveBackwards"
+            Visibility="{Binding ShowBackButton, Converter={StaticResource VisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <!--<SymbolIcon Symbol="Previous"  ></SymbolIcon>-->
+                    <Viewbox MaxWidth="50" MaxHeight="50">
+                        <materialDesign:PackIcon
+                        x:Name="BackIcon"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Right"
+                        Kind="ChevronLeft"
+                        Visibility="Visible" />
+                    </Viewbox>
+                    <TextBlock VerticalAlignment="Center" Text="Back" />
+                </StackPanel>
+            </Button>
+            <Button
+            x:Name="MoveForwards"
+            Margin="5,5,5,5"
+            cal:Message.Attach="MoveForwards"
+            Visibility="{Binding ShowForwardButton, Converter={StaticResource VisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Next" />
+                    <Viewbox MaxWidth="50" MaxHeight="50">
+                        <materialDesign:PackIcon
+                        x:Name="ForwardIcon"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Right"
+                        Kind="ChevronRight"
+                        Visibility="Visible" />
+                    </Viewbox>
+                </StackPanel>
+            </Button>
+        </StackPanel>
 
         <!--  ==========================  -->
         <!--  PROJECT'S GRID  -->
@@ -56,7 +114,7 @@
             Margin="5"
             BorderBrush="{StaticResource PrimaryHueMidBrush}"
             BorderThickness="2">
-            <Border.Style>
+            <!--<Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding AlertVisibility}" Value="Visible">
@@ -67,13 +125,13 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Border.Style>
+            </Border.Style>-->
             <StackPanel Orientation="Vertical">
                 <ListView
                     x:Name="RadioButtonGroupChoiceChipOutline"
                     Margin="5"
                     VerticalContentAlignment="Top"
-                    ItemsSource="{Binding DashboardProjects}"
+                   
                     ScrollViewer.CanContentScroll="False"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                     Style="{StaticResource MaterialDesignListBox}">
@@ -218,4 +276,4 @@
             </StackPanel>
         </Border>
     </Grid>
-</Window>
+</UserControl>

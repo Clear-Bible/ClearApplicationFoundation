@@ -23,11 +23,11 @@ internal class Bootstrapper : FoundationBootstrapper
 
     protected override async Task NavigateToMainWindow()
     {
-        
+
         // Show the StartupViewModel as a dialog, then navigate to HomeViewModel
         // if the dialog result is "true"
         await ShowStartupDialog<StartupViewModel, HomeViewModel>();
-        
+        //await ShowStartupDialog<ProjectPickerViewModel, ProjectSetupViewModel>();
     }
 
     protected override void PostInitialize()

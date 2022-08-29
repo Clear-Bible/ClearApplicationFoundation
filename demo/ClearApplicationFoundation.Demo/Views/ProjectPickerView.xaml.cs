@@ -17,7 +17,7 @@ namespace ClearApplicationFoundation.Demo.Views
     /// <summary>
     /// Interaction logic for ProjectPickerView.xaml
     /// </summary>
-    public partial class ProjectPickerView : Window
+    public partial class ProjectPickerView
     {
         public ProjectPickerView()
         {

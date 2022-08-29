@@ -12,21 +12,7 @@
       Title="StartupView">
 
     <Grid>
-        <!--<Button x:Name="GoToMain" cm:Message.Attach="GoToMain"  Background="{DynamicResource BlueDarkBrush}" Width="120">Go to Main</Button>-->
-        <StackPanel
-            Grid.Row="0"
-            Grid.Column="0"
-            Margin="10,10"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal">
-            <Button
-                x:Name="Ok"
-                Margin="5,5,5,5"
-                Content="OK" />
-            <Button
-                x:Name="Cancel"
-                Margin="5,5,5,5"
-                Content="Cancel" />
-        </StackPanel>
+        <ContentControl
+            cm:View.Model="{Binding ActiveItem}" />
     </Grid>
 </Page>
