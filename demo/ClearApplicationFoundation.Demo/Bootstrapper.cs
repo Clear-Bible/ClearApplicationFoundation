@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using ClearApplicationFoundation.Demo.ViewModels;
+using ClearApplicationFoundation.ViewModels.Shell;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -21,9 +22,28 @@ internal class Bootstrapper : FoundationBootstrapper
 
     protected override async Task NavigateToMainWindow()
     {
-        // Show the StatupViewModel as a dialog, then nanivate to HomeViewModel
+        
+        // Show the StartupViewModel as a dialog, then navigate to HomeViewModel
         // if the dialog result is "true"
         await ShowStartupDialog<StartupViewModel, HomeViewModel>();
+        
     }
 
+    protected override void PostInitialize()
+    {
+        SetApplicationName("Foundation Demo App");
+        base.PostInitialize();
+       
+    }
+
+    protected override void SetApplicationName(string applicationName = "Application Foundation Demo")
+    {
+        var shellViewModel = Container?.Resolve<ShellViewModel>();
+
+        if (shellViewModel != null)
+        {
+            shellViewModel.SetDisplayName(applicationName);
+        }
+
+    }
 }

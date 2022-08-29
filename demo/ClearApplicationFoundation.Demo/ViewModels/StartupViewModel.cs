@@ -5,20 +5,15 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 {
     public class StartupViewModel : Screen
     {
-        private readonly INavigationService _navigationService;
-
+      
         public StartupViewModel(INavigationService navigationService)
         {
-            _navigationService = navigationService;
+          
             CanOk = true;
+            DisplayName = "Startup Dialog";
         }
 
-        public void GoToMain()
-        {
-            _navigationService.NavigateToViewModel<HomeViewModel>();
-        }
 
-     
         public bool CanCancel => true /* can always cancel */;
         public async void Cancel()
         {

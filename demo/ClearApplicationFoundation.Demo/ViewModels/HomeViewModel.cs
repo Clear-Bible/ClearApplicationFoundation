@@ -26,7 +26,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 
         public HomeViewModel()
         {
-            
+            DisplayName = "Foundation Demo App";
         }
 
         public HomeViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator)
@@ -34,6 +34,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             _eventAggregator = eventAggregator;
             _mediator = mediator;
             logger.LogDebug("HomeViewModel ctor called!");
+            DisplayName = "Foundation Demo App";
         }
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)

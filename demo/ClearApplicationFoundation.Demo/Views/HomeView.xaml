@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewModels:HomeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800"
              Background="White"
-             
+          
              >
     <Grid>
         <Grid.RowDefinitions>

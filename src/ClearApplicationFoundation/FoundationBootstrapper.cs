@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ClearApplicationFoundation.Framework;
+using System.Globalization;
+using System.Threading;
+using ClearApplicationFoundation.ViewModels.Shell;
 
 namespace ClearApplicationFoundation
 {
@@ -25,9 +28,29 @@ namespace ClearApplicationFoundation
 
         public FoundationBootstrapper()
         {
+            // ReSharper disable VirtualMemberCallInConstructor
+            PreInitialize();
             Initialize();
+            PostInitialize();
+            // ReSharper enable VirtualMemberCallInConstructor
         }
 
+        protected virtual void PostInitialize()
+        {
+            //no-op
+        }
+
+        protected virtual void PreInitialize()
+        {
+            //var code = Properties.Settings.Default.LanguageCode;
+
+            //if (!string.IsNullOrWhiteSpace(code))
+            //{
+            //    var culture = CultureInfo.GetCultureInfo(code);
+            //    Thread.CurrentThread.CurrentUICulture = culture;
+            //    Thread.CurrentThread.CurrentCulture = culture;
+            //}
+        }
 
         protected INavigationService? NavigationService { get; private set; }
         protected override async void OnStartup(object sender, StartupEventArgs e)
@@ -81,7 +104,7 @@ namespace ClearApplicationFoundation
 
             if (result.HasValue && result.Value)
             {
-               
+
                 if (!mainWindow.IsVisible)
                 {
                     mainWindow.Show();
@@ -121,20 +144,35 @@ namespace ClearApplicationFoundation
 
         protected override void Configure()
         {
-         
+
             var builder = new ContainerBuilder();
 
             LoadModules(builder);
+
+            SetApplicationName();
 
             Container = builder.Build();
 
             SetupLogging();
 
+           
+
+        }
+
+        protected virtual void SetApplicationName(string applicationName = "Clear Application Foundation")
+        {
+            var shellViewModel = Container?.Resolve<ShellViewModel>();
+
+            if (shellViewModel != null)
+            {
+                shellViewModel.SetDisplayName(applicationName);
+            }
+
         }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
         {
-            var assemblies =  base.SelectAssemblies().ToList();
+            var assemblies = base.SelectAssemblies().ToList();
 
             assemblies.Add(Assembly.GetAssembly(typeof(FoundationBootstrapper)));
 
@@ -157,11 +195,11 @@ namespace ClearApplicationFoundation
         // ReSharper disable once RedundantAssignment
         protected void SetupLogging(string logPath, LogEventLevel logLevel = LogEventLevel.Information, string outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] [{SourceContext}] {Message}{NewLine}{Exception}")
         {
-            
+
 #if DEBUG
             logLevel = LogEventLevel.Verbose;
 #endif
-          
+
             var log = new LoggerConfiguration()
                 .MinimumLevel.Is(logLevel)
                 .WriteTo.File(logPath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day)
@@ -210,8 +248,8 @@ namespace ClearApplicationFoundation
             }
 
             var frame = frameSet.Frame;
-            
-          
+
+
             var mainWindow = Application.MainWindow;
             if (mainWindow == null)
             {
