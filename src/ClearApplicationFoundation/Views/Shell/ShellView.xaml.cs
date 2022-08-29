@@ -1,7 +1,5 @@
-﻿
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Interop;
 
 namespace ClearApplicationFoundation.Views.Shell
@@ -14,27 +12,27 @@ namespace ClearApplicationFoundation.Views.Shell
 
         // The enum flag for DwmSetWindowAttribute's second parameter, which tells the function what attribute to set.
         // Copied from dwmapi.h
-        public enum DWMWINDOWATTRIBUTE
+        public enum Dwmwindowattribute
         {
-            DWMWA_WINDOW_CORNER_PREFERENCE = 33
+            DwmwaWindowCornerPreference = 33
         }
 
         // The DWM_WINDOW_CORNER_PREFERENCE enum for DwmSetWindowAttribute's third parameter, which tells the function
         // what value of the enum to set.
         // Copied from dwmapi.h
-        public enum DWM_WINDOW_CORNER_PREFERENCE
+        public enum DwmWindowCornerPreference
         {
-            DWMWCP_DEFAULT = 0,
-            DWMWCP_DONOTROUND = 1,
-            DWMWCP_ROUND = 2,
-            DWMWCP_ROUNDSMALL = 3
+            DwmwcpDefault = 0,
+            DwmwcpDoNotRound = 1,
+            DwmwcpRound = 2,
+            DwmwcpRoundSmall = 3
         }
 
         // Import dwmapi.dll and define DwmSetWindowAttribute in C# corresponding to the native function.
         [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
         internal static extern void DwmSetWindowAttribute(IntPtr hwnd,
-            DWMWINDOWATTRIBUTE attribute,
-            ref DWM_WINDOW_CORNER_PREFERENCE pvAttribute,
+            Dwmwindowattribute attribute,
+            ref DwmWindowCornerPreference pvAttribute,
             uint cbAttribute);
 
 
@@ -42,10 +40,10 @@ namespace ClearApplicationFoundation.Views.Shell
         {
             InitializeComponent();
 
-            IntPtr hWnd = new WindowInteropHelper(GetWindow(this)).EnsureHandle();
-            var attribute = DWMWINDOWATTRIBUTE.DWMWA_WINDOW_CORNER_PREFERENCE;
-            var preference = DWM_WINDOW_CORNER_PREFERENCE.DWMWCP_ROUND;
-            DwmSetWindowAttribute(hWnd, attribute, ref preference, sizeof(uint));
+            var hWnd = new WindowInteropHelper(GetWindow(this)!).EnsureHandle();
+            //var attribute = Dwmwindowattribute.DwmwaWindowCornerPreference;
+            var preference = DwmWindowCornerPreference.DwmwcpRound;
+            DwmSetWindowAttribute(hWnd, Dwmwindowattribute.DwmwaWindowCornerPreference, ref preference, sizeof(uint));
         }
     }
 }
