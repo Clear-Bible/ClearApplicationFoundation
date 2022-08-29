@@ -1,16 +1,14 @@
 ﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using ClearApplicationFoundation.Demo.ViewModels;
 using ClearApplicationFoundation.Extensions;
 using ClearApplicationFoundation.Framework;
-using Module = Autofac.Module;
+using ClearApplicationFoundation.ViewModels.Shell;
 using MediatR.Extensions.Autofac.DependencyInjection;
+using System.Linq;
+using System.Reflection;
+using Module = Autofac.Module;
+using ShellViewModel = ClearApplicationFoundation.Demo.ViewModels.Shell.ShellViewModel;
 
 namespace ClearApplicationFoundation.Demo
 {
@@ -19,21 +17,13 @@ namespace ClearApplicationFoundation.Demo
         protected override void Load(ContainerBuilder builder)
         {
 
-            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-            //    .Where(type => type.Name.EndsWith("ViewModel"))
-            //    .AsSelf()
-            //    .InstancePerDependency();
+            // IMPORTANT!  - override the default ShellViewModel from the foundation.
+            builder.RegisterType<ShellViewModel>().As<IShellViewModel>();
 
-            ////  register views
-            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-            //    .Where(type => type.Name.EndsWith("View"))
-            //    .AsSelf()
-            //    .InstancePerDependency();
-
-            builder.RegisterType<HomeViewModel>().As<IMainWindow>().InstancePerDependency();
-
+            // Register validators from this assembly.
             builder.RegisterValidators(Assembly.GetExecutingAssembly());
 
+            // Register Mediator requests and handlers.
             builder.RegisterMediatR(typeof(App).Assembly);
         }
     }

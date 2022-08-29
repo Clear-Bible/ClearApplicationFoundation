@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Serilog.Extensions.Logging;
 using System.Linq;
 using ClearApplicationFoundation.Framework;
+using ClearApplicationFoundation.ViewModels.Shell;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ClearApplicationFoundation
@@ -13,6 +14,18 @@ namespace ClearApplicationFoundation
     {
         protected override void Load(ContainerBuilder builder)
         {
+
+            ////  register view models
+            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
+            //    .Where(type => !type.Name.StartsWith("Shell") && type.Name.EndsWith("ViewModel"))
+            //    .AsSelf()
+            //    .InstancePerDependency();
+
+            ////  register views
+            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
+            //    .Where(type => !type.Name.StartsWith("Shell") && type.Name.EndsWith("View"))
+            //    .AsSelf()
+            //    .InstancePerDependency();
 
             //  register view models
             builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
@@ -25,7 +38,7 @@ namespace ClearApplicationFoundation
                 .Where(type => type.Name.EndsWith("View"))
                 .AsSelf()
                 .InstancePerDependency();
-            
+
             builder.RegisterType<WindowManager>().As<IWindowManager>().InstancePerLifetimeScope();
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().InstancePerLifetimeScope();
 
@@ -35,6 +48,7 @@ namespace ClearApplicationFoundation
             builder.RegisterInstance(frameSet);
             builder.RegisterInstance(frameSet.NavigationService).As<INavigationService>();
 
+            builder.RegisterType<ShellViewModel>().As<IShellViewModel>();
 
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider());

@@ -3,6 +3,7 @@ using ClearApplicationFoundation.Demo.ViewModels;
 using ClearApplicationFoundation.ViewModels.Shell;
 using System.IO;
 using System.Threading.Tasks;
+using ShellViewModel = ClearApplicationFoundation.Demo.ViewModels.Shell.ShellViewModel;
 
 namespace ClearApplicationFoundation.Demo;
 
@@ -31,19 +32,7 @@ internal class Bootstrapper : FoundationBootstrapper
 
     protected override void PostInitialize()
     {
-        SetApplicationName("Foundation Demo App");
         base.PostInitialize();
-       
     }
 
-    protected override void SetApplicationName(string applicationName = "Application Foundation Demo")
-    {
-        var shellViewModel = Container?.Resolve<ShellViewModel>();
-
-        if (shellViewModel != null)
-        {
-            shellViewModel.SetDisplayName(applicationName);
-        }
-
-    }
 }

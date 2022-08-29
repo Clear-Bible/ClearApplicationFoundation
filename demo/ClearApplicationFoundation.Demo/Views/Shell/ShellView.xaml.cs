@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 
-namespace ClearApplicationFoundation.Views.Shell
+namespace ClearApplicationFoundation.Demo.Views.Shell
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml

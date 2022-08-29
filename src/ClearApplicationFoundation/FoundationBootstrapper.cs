@@ -55,7 +55,7 @@ namespace ClearApplicationFoundation
         protected INavigationService? NavigationService { get; private set; }
         protected override async void OnStartup(object sender, StartupEventArgs e)
         {
-            await DisplayRootViewForAsync<ShellViewModel>();
+            await DisplayRootViewForAsync<IShellViewModel>();
 
             Application.Current.MainWindow?.Hide();
             AddFrameToMainWindow();
@@ -67,7 +67,24 @@ namespace ClearApplicationFoundation
 
         protected virtual async Task NavigateToMainWindow()
         {
-            Application.Current.MainWindow?.Show();
+
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow == null)
+            {
+                Application.Current.Shutdown(-101);
+            }
+
+            if (!mainWindow!.IsVisible)
+            {
+                mainWindow.Show();
+            }
+
+            // NB: It is important to change WindowState after the MainWindow has been shown.
+            //     Otherwise it will fall be hind all of the open apps.
+            if (mainWindow.WindowState == WindowState.Minimized)
+            {
+                mainWindow.WindowState = WindowState.Normal;
+            }
             NavigateToViewModel<PlaceHolderMainViewModel>();
             await Task.CompletedTask;
         }
@@ -149,8 +166,6 @@ namespace ClearApplicationFoundation
 
             LoadModules(builder);
 
-            SetApplicationName();
-
             Container = builder.Build();
 
             SetupLogging();
@@ -159,16 +174,6 @@ namespace ClearApplicationFoundation
 
         }
 
-        protected virtual void SetApplicationName(string applicationName = "Clear Application Foundation")
-        {
-            var shellViewModel = Container?.Resolve<ShellViewModel>();
-
-            if (shellViewModel != null)
-            {
-                shellViewModel.SetDisplayName(applicationName);
-            }
-
-        }
 
         protected override IEnumerable<Assembly> SelectAssemblies()
         {
