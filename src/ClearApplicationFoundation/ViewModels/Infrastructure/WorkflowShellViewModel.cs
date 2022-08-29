@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Autofac;
 using Caliburn.Micro;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -11,11 +12,12 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
 {
     public abstract  class WorkflowShellViewModel : Conductor<IWorkflowStepViewModel>.Collection.OneActive
     {
-        protected ILogger<WorkflowShellViewModel>? Logger { get; set; }
+        protected ILogger? Logger { get; set; }
         public List<IWorkflowStepViewModel>? Steps { get; set; }
         protected IEventAggregator? EventAggregator { get; set; }
         protected INavigationService? NavigationService { get; set; }
         protected IMediator? Mediator { get; set; }
+        protected ILifetimeScope? LifetimeScope { get; set; }
 
 
         private FlowDirection _windowFlowDirection = FlowDirection.LeftToRight;
@@ -43,16 +45,17 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             }
         }
 
-        protected WorkflowShellViewModel()
+        protected WorkflowShellViewModel(ILifetimeScope? lifetimeScope)
         {
-
+            LifetimeScope = lifetimeScope;
         }
-        protected WorkflowShellViewModel(IMediator? mediator,  ILogger<WorkflowShellViewModel>? logger, INavigationService? navigationService, IEventAggregator? eventAggregator)
+        protected WorkflowShellViewModel(IMediator? mediator,  ILogger? logger, INavigationService? navigationService, IEventAggregator? eventAggregator, ILifetimeScope? lifetimeScope)
         {
             Mediator = mediator;
             Logger = logger;
             NavigationService = navigationService;
             EventAggregator = eventAggregator;
+            LifetimeScope = lifetimeScope;
             Steps = new List<IWorkflowStepViewModel>();
 
             //WindowFlowDirection = ProjectManager.CurrentLanguageFlowDirection;
