@@ -1,7 +1,6 @@
 using System;
 using System.Windows;
 using System.Windows.Interop;
-using ClearApplicationFoundation.Framework.Win32;
 using Microsoft.Xaml.Behaviors;
 
 namespace ClearApplicationFoundation.Framework.Behaviors
