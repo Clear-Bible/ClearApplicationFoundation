@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:ClearApplicationFoundation.Demo.ViewModels"
              xmlns:cm="http://caliburnmicro.com"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:controls="clr-namespace:ClearApplicationFoundation.Controls.IconPacks.Browser.Controls;assembly=ClearApplicationFoundation"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=viewModels:HomeViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800"
@@ -17,8 +19,12 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="{Binding Title}" FontSize="24" Margin="10"/>
-        <ListBox Grid.Row="1"  x:Name="Items" DisplayMemberPath="DisplayName" Margin="10,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="1"  Grid.Row="0" Text="{Binding Title}" FontSize="24" Margin="10"/>
+        <ListBox Grid.Column="1" Grid.Row="1"  x:Name="Items" DisplayMemberPath="DisplayName" Margin="10,0">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Horizontal"/>
@@ -26,6 +32,31 @@
             </ListBox.ItemsPanel>
         </ListBox>
 
-        <ContentControl Grid.Row="2"  cm:View.Model="{Binding ActiveItem}" Margin="10,0, 10, 10"/>
+        <ContentControl Grid.Column="1" Grid.Row="2"  cm:View.Model="{Binding ActiveItem}" Margin="10,0, 10, 10"/>
+
+        <controls:SidebarExpander Grid.Column="0" Grid.Row="1" Grid.RowSpan="2"
+                                  mah:HeaderedControlHelper.HeaderBackground="{DynamicResource IconPackBrowser.Brushes.PanelBackground}"
+                                  Background="{DynamicResource IconPackBrowser.Brushes.PanelBackground}"
+                                  BorderBrush="{DynamicResource MahApps.Brushes.Gray10}"
+                                  BorderThickness="0"
+                                  DataContext="{Binding ElementName=NavigationListBox, Path=SelectedItem}"
+                                  ExpandDirection="Left"
+                                   
+                                  IsExpanded="False">
+            <controls:SidebarExpander.Header>
+                <TextBlock FontWeight="Bold"
+                           Text="PROJECT DESIGN SURFACE"
+                           TextAlignment="Center"
+                           BaselineOffset="100"
+                           TextOptions.TextFormattingMode="Ideal">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="270" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </controls:SidebarExpander.Header>
+            <Label Content="Replace ME!                                 " Foreground="Black"></Label>
+        </controls:SidebarExpander>
     </Grid>
+
+   
 </Page>

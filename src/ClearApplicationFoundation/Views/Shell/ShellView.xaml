@@ -28,4 +28,6 @@
         </Grid.RowDefinitions>
        <!--Frame will be added into Grid.Row="0" during the application startup-->
     </Grid>
+
+
 </mah:MetroWindow>
