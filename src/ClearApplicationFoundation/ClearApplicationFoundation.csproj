@@ -5,6 +5,15 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Clear Application Foundation</Title>
+    <RepositoryUrl>https://github.com/Clear-Bible/ClearApplicationFoundation</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Clear-Bible/ClearApplicationFoundation</PackageProjectUrl>
+    <Description>A framework for creating modular WPF applications.</Description>
+    <Copyright>Copyright © Clear Bible</Copyright>
+    <PackageTags>Autofac; Caliburn.Micro;MahApps.Metro</PackageTags>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>

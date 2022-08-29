@@ -22,7 +22,7 @@ public abstract class WorkflowStepViewModel : ApplicationScreen, IWorkflowStepVi
 
     }
 
-    protected WorkflowStepViewModel(IEventAggregator eventAggregator, INavigationService navigationService, ILogger logger,IMediator mediator) :
+    protected WorkflowStepViewModel(IEventAggregator eventAggregator, INavigationService navigationService, ILogger logger, IMediator mediator) :
         base(navigationService, logger, eventAggregator, mediator)
     {
 
