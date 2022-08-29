@@ -51,6 +51,8 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 
             CurrentStep = Steps![0];
             IsLastWorkflowStep = (Steps.Count == 1);
+
+            EnableControls = true;
             await ActivateItemAsync(Steps[0], cancellationToken);
         }
 

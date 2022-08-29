@@ -71,7 +71,8 @@
             x:Name="MoveBackwards"
             Margin="5,5,5,5"
             cal:Message.Attach="MoveBackwards"
-            Visibility="{Binding ShowBackButton, Converter={StaticResource VisibilityConverter}}">
+            Visibility="{Binding ShowBackButton, Converter={StaticResource VisibilityConverter}}"
+            IsEnabled="{Binding EnableControls}">
                 <StackPanel Orientation="Horizontal">
                     <!--<SymbolIcon Symbol="Previous"  ></SymbolIcon>-->
                     <Viewbox MaxWidth="50" MaxHeight="50">
@@ -90,7 +91,8 @@
             x:Name="MoveForwards"
             Margin="5,5,5,5"
             cal:Message.Attach="MoveForwards"
-            Visibility="{Binding ShowForwardButton, Converter={StaticResource VisibilityConverter}}">
+            Visibility="{Binding ShowForwardButton, Converter={StaticResource VisibilityConverter}}"
+            IsEnabled="{Binding EnableControls}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="Next" />
                     <Viewbox MaxWidth="50" MaxHeight="50">

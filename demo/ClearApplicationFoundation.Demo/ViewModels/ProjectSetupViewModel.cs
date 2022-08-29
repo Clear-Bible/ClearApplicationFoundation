@@ -13,54 +13,19 @@ using Microsoft.Extensions.Logging;
 
 namespace ClearApplicationFoundation.Demo.ViewModels
 {
-    public class ProjectSetupViewModel :Screen, IWorkflowStepViewModel
+    public class ProjectSetupViewModel : WorkflowStepViewModel
     {
-        private readonly IEventAggregator _eventAggregator;
-        private readonly IMediator _mediator;
-        private string? _title;
-        
 
-        public ProjectSetupViewModel()
+        public ProjectSetupViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator, INavigationService navigationService) : base(eventAggregator, navigationService, logger, mediator)
         {
-        }
 
-        public ProjectSetupViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator)
-        {
-            _eventAggregator = eventAggregator;
-            _mediator = mediator;
-            logger.LogDebug("HomeViewModel ctor called!");
-        }
-
-        public string? Title { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Direction Direction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public Task MoveBackwards()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task MoveBackwardsAction()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task MoveForwards()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task MoveForwardsAction()
-        {
-            throw new NotImplementedException();
         }
 
         protected async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-           
-            var tabs = IoC.GetAll<ITab>();
 
-           
-
+            CanMoveForwards = true;
+            CanMoveBackwards = true;
         }
     }
 }
