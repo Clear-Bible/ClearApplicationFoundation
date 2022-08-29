@@ -30,8 +30,11 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel>
-            <TextBlock Text="Title of Application" Margin="10" FontSize="20"/>
-                <TextBox
+            <TextBlock
+                Margin="10"
+                FontSize="20"
+                Text="Title of Application" />
+            <TextBox
                 Width="130"
                 Height="25"
                 BorderBrush="Black"
@@ -39,9 +42,13 @@
                 Text="Search Terms go here" />
         </StackPanel>
 
-        <Button Grid.Column="1" Grid.Row="1" Content="Create New Project" Width="200"/>
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="200"
+            Content="Create New Project" />
 
-            <!--  ==========================  -->
+        <!--  ==========================  -->
         <!--  PROJECT'S GRID  -->
         <!--  ==========================  -->
         <Border
