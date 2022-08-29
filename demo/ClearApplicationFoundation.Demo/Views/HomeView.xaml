@@ -39,10 +39,8 @@
                                   Background="{DynamicResource IconPackBrowser.Brushes.PanelBackground}"
                                   BorderBrush="{DynamicResource MahApps.Brushes.Gray10}"
                                   BorderThickness="0"
-                                  DataContext="{Binding ElementName=NavigationListBox, Path=SelectedItem}"
                                   ExpandDirection="Left"
-                                   
-                                  IsExpanded="False">
+                                  IsExpanded="True">
             <controls:SidebarExpander.Header>
                 <TextBlock FontWeight="Bold"
                            Text="PROJECT DESIGN SURFACE"

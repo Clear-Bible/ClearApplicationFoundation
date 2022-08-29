@@ -1,16 +1,17 @@
 ﻿using Caliburn.Micro;
+using ClearApplicationFoundation.ViewModels.Shell;
 
-namespace ClearApplicationFoundation.ViewModels.Shell
+namespace ClearApplicationFoundation.Demo.ViewModels.Shell
 {
     public class ShellViewModel : Screen, IShellViewModel
     {
-        private string _title;
 
         public ShellViewModel()
         {
-            Title = "Clear Application Foundation";
+            Title = "Foundation Demo Application";
         }
 
+        private string _title;
         public string Title
         {
             get => _title;
