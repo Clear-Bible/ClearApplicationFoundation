@@ -6,8 +6,7 @@
 
 ## Steps
 
-1. Open Powershell terminal in Engine's base solution directory.
-2. Change the version number of the ClearApplicationFoundation project
-3. Build the solution
-4. Open a terminal window in the Clearapplication\bin\Debug directory
-5. Execute `nuget push .\ClearApplicationFoundation.<VERSION>.nupkg -ApiKey <YOUR KEY> -Source https://nuget.pkg.github.com/clear-bible/index.json`
+1. Change the version number of the ClearApplicationFoundation project
+2. Build the solution
+3. Open a terminal window in the `ClearApplicationFoundation\bin\Debug` directory
+4. Execute `nuget push .\ClearApplicationFoundation.<VERSION>.nupkg -ApiKey <YOUR KEY> -Source https://nuget.pkg.github.com/clear-bible/index.json`
