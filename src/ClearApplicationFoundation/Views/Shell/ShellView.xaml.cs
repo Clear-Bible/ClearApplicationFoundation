@@ -41,7 +41,6 @@ namespace ClearApplicationFoundation.Views.Shell
             InitializeComponent();
 
             var hWnd = new WindowInteropHelper(GetWindow(this)!).EnsureHandle();
-            //var attribute = Dwmwindowattribute.DwmwaWindowCornerPreference;
             var preference = DwmWindowCornerPreference.DwmwcpRound;
             DwmSetWindowAttribute(hWnd, Dwmwindowattribute.DwmwaWindowCornerPreference, ref preference, sizeof(uint));
         }
