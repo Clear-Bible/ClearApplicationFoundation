@@ -1,18 +1,18 @@
 ﻿using Caliburn.Micro;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Threading;
 using System.Threading.Tasks;
+using ClearApplicationFoundation.Demo.DependencyInjectionTest;
 using ClearApplicationFoundation.Demo.Features.Title;
 using ClearApplicationFoundation.Framework;
 using MediatR;
 
 namespace ClearApplicationFoundation.Demo.ViewModels
 {
-    public class HomeViewModel : Conductor<ITab>.Collection.OneActive, IMainWindow
+    public class HomeViewModel : Conductor<ITab>.Collection.OneActive, IMainWindowViewModel
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IMediator _mediator;
@@ -29,12 +29,16 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             DisplayName = "Foundation Demo App";
         }
 
-        public HomeViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator)
+        public HomeViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator, IServiceProvider serviceProvider)
         {
             _eventAggregator = eventAggregator;
             _mediator = mediator;
             logger.LogDebug("HomeViewModel ctor called!");
             DisplayName = "Foundation Demo App";
+
+            var testService = serviceProvider.GetService<TestService>();
+
+
         }
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)

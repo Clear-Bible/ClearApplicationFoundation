@@ -3,6 +3,8 @@ using ClearApplicationFoundation.Demo.ViewModels;
 using ClearApplicationFoundation.ViewModels.Shell;
 using System.IO;
 using System.Threading.Tasks;
+using ClearApplicationFoundation.Demo.DependencyInjectionTest;
+using Microsoft.Extensions.DependencyInjection;
 using ShellViewModel = ClearApplicationFoundation.Demo.ViewModels.Shell.ShellViewModel;
 
 namespace ClearApplicationFoundation.Demo;
@@ -34,5 +36,13 @@ internal class Bootstrapper : FoundationBootstrapper
     {
         base.PostInitialize();
     }
+
+    protected override void PopulateServiceCollection(ServiceCollection serviceCollection)
+    {
+        serviceCollection.AddTransient<TestService>();
+        base.PopulateServiceCollection(serviceCollection);
+    }
+
+  
 
 }

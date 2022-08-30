@@ -77,7 +77,7 @@
                 Grid.Column="1"
                 BorderBrush="Black"
                 BorderThickness="1" />
-            <Button
+            <Button x:Name="Create"
                 Grid.Row="3"
                 Grid.Column="1"
                 VerticalAlignment="Center"

@@ -27,5 +27,12 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             CanMoveForwards = true;
             CanMoveBackwards = true;
         }
+
+        public async Task Create()
+        {
+            var startupViewModel = Parent as StartupViewModel;
+            startupViewModel.Ok();
+            //await TryCloseAsync(true);
+        }
     }
 }
