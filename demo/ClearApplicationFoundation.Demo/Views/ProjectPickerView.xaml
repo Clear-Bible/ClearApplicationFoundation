@@ -44,7 +44,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
 
         <StackPanel>
@@ -53,28 +53,28 @@
                 FontSize="20"
                 Text="Title of Application" />
             <TextBox
-                Width="130"
+                Width="155"
                 Height="25"
                 BorderBrush="Black"
                 BorderThickness="1"
-                Text="Search Terms go here" />
+                materialDesign:HintAssist.Hint="Search" />
         </StackPanel>
 
 
         <StackPanel
-        Grid.Row="1"
-        Grid.Column="1"
-        Margin="10,10"
-        HorizontalAlignment="Right"
-        Orientation="Horizontal">
-            <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="10,10"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <!--<Button
             x:Name="MoveBackwards"
             Margin="5,5,5,5"
             cal:Message.Attach="MoveBackwards"
             Visibility="{Binding ShowBackButton, Converter={StaticResource VisibilityConverter}}"
             IsEnabled="{Binding EnableControls}">
                 <StackPanel Orientation="Horizontal">
-                    <!--<SymbolIcon Symbol="Previous"  ></SymbolIcon>-->
+                    --><!--<SymbolIcon Symbol="Previous"  ></SymbolIcon>--><!--
                     <Viewbox MaxWidth="50" MaxHeight="50">
                         <materialDesign:PackIcon
                         x:Name="BackIcon"
@@ -86,7 +86,7 @@
                     </Viewbox>
                     <TextBlock VerticalAlignment="Center" Text="Back" />
                 </StackPanel>
-            </Button>
+            </Button>-->
             <Button
             x:Name="MoveForwards"
             Margin="5,5,5,5"
@@ -94,7 +94,7 @@
             Visibility="{Binding ShowForwardButton, Converter={StaticResource VisibilityConverter}}"
             IsEnabled="{Binding EnableControls}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Text="Next" />
+                    <TextBlock VerticalAlignment="Center" Text="Create New Project" />
                     <Viewbox MaxWidth="50" MaxHeight="50">
                         <materialDesign:PackIcon
                         x:Name="ForwardIcon"
@@ -111,54 +111,37 @@
         <!--  ==========================  -->
         <!--  PROJECT'S GRID  -->
         <!--  ==========================  -->
-        <Border
-            Grid.Row="1"
-            Margin="5"
-            BorderBrush="{StaticResource PrimaryHueMidBrush}"
-            BorderThickness="2">
-            <!--<Border.Style>
-                <Style TargetType="Border">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding AlertVisibility}" Value="Visible">
-                            <Setter Property="IsEnabled" Value="False" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding AlertVisibility}" Value="Collapsed">
-                            <Setter Property="IsEnabled" Value="True" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>-->
-            <StackPanel Orientation="Vertical">
-                <ListView
+
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <ListView
                     x:Name="RadioButtonGroupChoiceChipOutline"
                     Margin="5"
-                    VerticalContentAlignment="Top"
-                   
-                    ScrollViewer.CanContentScroll="False"
+                    Height="355"
+                    ScrollViewer.CanContentScroll="True"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                     Style="{StaticResource MaterialDesignListBox}">
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1">
-                                <StackPanel Orientation="Vertical">
-                                    <StackPanel Orientation="Horizontal">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
 
-                                        <!--  PROJECT TEXT  -->
-                                        <StackPanel Margin="15,0,0,0" Orientation="Horizontal">
-                                            <!--  DELETE PROJECT BUTTON  -->
-                                            <Button
+                                    <!--  PROJECT TEXT  -->
+                                    <StackPanel Margin="15,0,0,0" Orientation="Horizontal">
+                                        <!--  DELETE PROJECT BUTTON  -->
+                                        <Button
                                                 Width="30"
                                                 Height="30"
                                                 cal:Message.Attach="DeleteProject($dataContext)"
                                                 Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
                                                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                                                 Style="{StaticResource MaterialDesignIconButton}">
-                                                <Button.ToolTip>MaterialDesignIconButton</Button.ToolTip>
-                                                <materialDesign:PackIcon Kind="DeleteForever" />
-                                            </Button>
-                                            <StackPanel Orientation="Vertical">
-                                                <TextBlock
+                                            <Button.ToolTip>MaterialDesignIconButton</Button.ToolTip>
+                                            <materialDesign:PackIcon Kind="DeleteForever" />
+                                        </Button>
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock
                                                     Width="370"
                                                     Margin="10,15,0,0"
                                                     HorizontalAlignment="Left"
@@ -167,115 +150,118 @@
                                                     Foreground="{DynamicResource PrimaryHueMidBrush}">
                                                     <Run Text="PROJECT: " />
                                                     <Run Text="{Binding ProjectName}" />
-                                                </TextBlock>
+                                            </TextBlock>
 
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Width="217" Margin="10,0,0,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Width="217" Margin="10,0,0,0">
                                                         <Run Text="Database: " />
                                                         <Run Text="{Binding ShortFilePath}" />
-                                                    </TextBlock>
-                                                    <TextBlock
+                                                </TextBlock>
+                                                <TextBlock
                                                         Margin="25,0,0,0"
                                                         FontStyle="Italic"
                                                         Text="{Binding Modified}" />
-                                                </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
+                                </StackPanel>
 
-                                    <!--  ==========================  -->
-                                    <!--  TOOL BUTTONS  -->
-                                    <!--  ==========================  -->
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button
+                                <!--  ==========================  -->
+                                <!--  TOOL BUTTONS  -->
+                                <!--  ==========================  -->
+                                <StackPanel Orientation="Horizontal">
+                                    <Button
                                             x:Name="NewProject"
                                             Width="165"
                                             Margin="15,8,12,12"
                                             cal:Message.Attach="ProjectWorkspace($dataContext)"
                                             IsEnabled="True">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
-                                                    <Setter Property="Padding" Value="0,3,0,3" />
-                                                </Style>
-                                            </Button.Style>
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
+                                                <Setter Property="Padding" Value="0,3,0,3" />
+                                            </Style>
+                                        </Button.Style>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
                                                     Width="36"
                                                     Height="36"
                                                     Margin="-15,0,0,0"
                                                     VerticalAlignment="Center"
                                                     Kind="MonitorDashboard" />
-                                                <TextBlock VerticalAlignment="Center">Project</TextBlock>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button
+                                            <TextBlock VerticalAlignment="Center">Project</TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button
                                             x:Name="Workspace"
                                             Width="165"
                                             Margin="15,8,12,12"
                                             cal:Message.Attach="Workspace($dataContext)"
                                             IsEnabled="True">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
-                                                    <Setter Property="Padding" Value="0,3,0,3" />
-                                                </Style>
-                                            </Button.Style>
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
+                                                <Setter Property="Padding" Value="0,3,0,3" />
+                                            </Style>
+                                        </Button.Style>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
                                                     Width="36"
                                                     Height="36"
                                                     Margin="-15,0,0,0"
                                                     VerticalAlignment="Center"
                                                     Kind="MonitorDashboard" />
-                                                <TextBlock VerticalAlignment="Center">ClearDashboard</TextBlock>
-                                            </StackPanel>
-                                        </Button>
+                                            <TextBlock VerticalAlignment="Center">ClearDashboard</TextBlock>
+                                        </StackPanel>
+                                    </Button>
 
-                                        <Button
+                                    <Button
                                             Width="165"
                                             Margin="15,8,12,12"
                                             IsEnabled="True">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
-                                                    <Setter Property="Padding" Value="0,3,0,3" />
-                                                </Style>
-                                            </Button.Style>
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource MaterialDesignRaisedAccentButton}" TargetType="Button">
+                                                <Setter Property="Padding" Value="0,3,0,3" />
+                                            </Style>
+                                        </Button.Style>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
                                                     Width="36"
                                                     Height="36"
                                                     Margin="-15,0,0,0"
                                                     VerticalAlignment="Center"
                                                     Kind="Dictionary" />
-                                                <TextBlock VerticalAlignment="Center">ClearConcordance</TextBlock>
-                                            </StackPanel>
-                                        </Button>
+                                            <TextBlock VerticalAlignment="Center">ClearConcordance</TextBlock>
+                                        </StackPanel>
+                                    </Button>
 
-                                        <Button
+                                    <Button
                                             Width="165"
                                             Margin="8"
                                             IsEnabled="True"
                                             Style="{StaticResource MaterialDesignRaisedAccentButton}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon
                                                     Width="30"
                                                     Height="30"
                                                     Margin="-15,0,0,0"
                                                     VerticalAlignment="Center"
                                                     Kind="ChartSankeyVariant">
-                                                    <materialDesign:PackIcon.RenderTransform>
-                                                        <RotateTransform Angle="270" CenterX="15" CenterY="15" />
-                                                    </materialDesign:PackIcon.RenderTransform>
-                                                </materialDesign:PackIcon>
-                                                <TextBlock VerticalAlignment="Center">ClearAligner</TextBlock>
-                                            </StackPanel>
-                                        </Button>
-                                    </StackPanel>
+                                                <materialDesign:PackIcon.RenderTransform>
+                                                    <RotateTransform Angle="270" CenterX="15" CenterY="15" />
+                                                </materialDesign:PackIcon.RenderTransform>
+                                            </materialDesign:PackIcon>
+                                            <TextBlock VerticalAlignment="Center">ClearAligner</TextBlock>
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
-        </Border>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListViewItem Content="Project #1" BorderBrush="Gray" BorderThickness="1" Margin="5,5,0,0"/>
+                <ListViewItem Content="Project #2" BorderBrush="Gray" BorderThickness="1" Margin="5,5,0,0"/>
+                <ListViewItem Content="Project #3" BorderBrush="Gray" BorderThickness="1" Margin="5,5,0,0"/>
+                <ListViewItem Content="Project #4" BorderBrush="Gray" BorderThickness="1" Margin="5,5,0,0"/>
+            </ListView>
+        </StackPanel>
     </Grid>
 </UserControl>

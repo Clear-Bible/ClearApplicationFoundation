@@ -26,6 +26,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 
             CanMoveForwards = true;
             CanMoveBackwards = true;
+            EnableControls = true;
         }
 
         public async Task Create()
