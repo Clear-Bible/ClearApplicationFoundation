@@ -16,7 +16,9 @@ using System.Windows.Controls;
 using ClearApplicationFoundation.Framework;
 using System.Globalization;
 using System.Threading;
+using Autofac.Extensions.DependencyInjection;
 using ClearApplicationFoundation.ViewModels.Shell;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ClearApplicationFoundation
 {
@@ -68,6 +70,13 @@ namespace ClearApplicationFoundation
         protected virtual async Task NavigateToMainWindow()
         {
 
+            EnsureApplicationMainWindowVisible();
+            NavigateToViewModel<PlaceHolderMainWindowViewModel>();
+            await Task.CompletedTask;
+        }
+
+        protected void EnsureApplicationMainWindowVisible()
+        {
             var mainWindow = Application.Current.MainWindow;
             if (mainWindow == null)
             {
@@ -85,8 +94,6 @@ namespace ClearApplicationFoundation
             {
                 mainWindow.WindowState = WindowState.Normal;
             }
-            NavigateToViewModel<PlaceHolderMainViewModel>();
-            await Task.CompletedTask;
         }
 
         protected virtual async Task ShowStartupDialog<TStartupDialogViewModel, TNavigateToViewModel>()
@@ -104,6 +111,7 @@ namespace ClearApplicationFoundation
             {
                 mainWindow.Hide();
             }
+
 
             if (Container == null)
             {
@@ -159,10 +167,18 @@ namespace ClearApplicationFoundation
         }
 
 
+        protected virtual void PopulateServiceCollection(ServiceCollection serviceCollection)
+        {
+            //no-op
+        }
+
         protected override void Configure()
         {
+            var serviceCollection = new ServiceCollection();
 
             var builder = new ContainerBuilder();
+            PopulateServiceCollection(serviceCollection);
+            builder.Populate(serviceCollection);
 
             LoadModules(builder);
 

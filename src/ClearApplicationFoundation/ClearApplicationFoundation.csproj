@@ -14,17 +14,20 @@
     <PackageTags>Autofac; Caliburn.Micro;MahApps.Metro</PackageTags>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Caliburn.Micro" Version="4.0.210" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
     <PackageReference Include="Dirkster.AvalonDock" Version="4.70.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.Aero" Version="4.70.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.Expression" Version="4.70.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.Metro" Version="4.70.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.VS2010" Version="4.70.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.70.1" />
-    <PackageReference Include="FluentValidation" Version="11.2.0" />
+    <PackageReference Include="FluentValidation" Version="11.2.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.1" />
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="4.11.0" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.2.2" />

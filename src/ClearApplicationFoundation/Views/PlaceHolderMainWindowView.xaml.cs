@@ -3,11 +3,11 @@
 namespace ClearApplicationFoundation.Views
 {
     /// <summary>
-    /// Interaction logic for PlaceHolderMainView.xaml
+    /// Interaction logic for PlaceHolderMainWindowView.xaml
     /// </summary>
-    public partial class PlaceHolderMainView : UserControl
+    public partial class PlaceHolderMainWindowView 
     {
-        public PlaceHolderMainView()
+        public PlaceHolderMainWindowView()
         {
             InitializeComponent();
         }

@@ -101,7 +101,7 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             await EventAggregator.PublishOnUIThreadAsync(new ProgressBarVisibilityMessage(show));
         }
 
-        public Task<TResponse> ExecuteRequest<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
+        public virtual Task<TResponse> ExecuteRequest<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken)
         {
             IsBusy = true;
             try

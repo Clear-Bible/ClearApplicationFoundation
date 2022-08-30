@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Serilog.Extensions.Logging;
 using System.Linq;
 using ClearApplicationFoundation.Framework;
+using ClearApplicationFoundation.ViewModels;
 using ClearApplicationFoundation.ViewModels.Shell;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -49,6 +50,7 @@ namespace ClearApplicationFoundation
             builder.RegisterInstance(frameSet.NavigationService).As<INavigationService>();
 
             builder.RegisterType<ShellViewModel>().As<IShellViewModel>();
+            builder.RegisterType<PlaceHolderMainWindowViewModel>().As<IMainWindowViewModel>();
 
             var loggerFactory = new LoggerFactory();
             loggerFactory.AddProvider(new SerilogLoggerProvider());

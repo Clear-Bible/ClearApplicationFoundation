@@ -1,7 +1,7 @@
 ﻿
 namespace ClearApplicationFoundation.Framework
 {
-    public interface IMainWindow
+    public interface IMainWindowViewModel
     {
         string? Title { get; set; }
     }
