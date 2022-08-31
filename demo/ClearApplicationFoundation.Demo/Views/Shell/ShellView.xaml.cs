@@ -40,6 +40,11 @@ namespace ClearApplicationFoundation.Demo.Views.Shell
         {
             InitializeComponent();
 
+            RoundCorners();
+        }
+
+        private void RoundCorners()
+        {
             var hWnd = new WindowInteropHelper(GetWindow(this)!).EnsureHandle();
             var preference = DwmWindowCornerPreference.DwmwcpRound;
             DwmSetWindowAttribute(hWnd, Dwmwindowattribute.DwmwaWindowCornerPreference, ref preference, sizeof(uint));

@@ -17,15 +17,16 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             await TryCloseAsync(false);
         }
 
+       
 
-        private bool _canOk;
-
-        public StartupViewModel(IMediator? mediator, ILogger<StartupViewModel>? logger, INavigationService? navigationService, IEventAggregator? eventAggregator, ILifetimeScope? lifetimeScope) : base(mediator, logger, navigationService, eventAggregator, lifetimeScope)
+        public StartupViewModel(INavigationService? navigationService, ILogger<StartupViewModel>? logger, IMediator? mediator, IEventAggregator? eventAggregator, ILifetimeScope? lifetimeScope) : 
+            base(navigationService, logger, eventAggregator, mediator, lifetimeScope)
         {
             CanOk = true;
-            DisplayName = "Startup Dialog";
+            Title = "Startup Dialog";
         }
 
+        private bool _canOk;
         public bool CanOk
         {
             get => _canOk;

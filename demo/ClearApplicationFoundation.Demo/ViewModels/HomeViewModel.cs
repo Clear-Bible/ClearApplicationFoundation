@@ -14,8 +14,8 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 {
     public class HomeViewModel : Conductor<ITab>.Collection.OneActive, IMainWindowViewModel
     {
-        private readonly IEventAggregator _eventAggregator;
-        private readonly IMediator _mediator;
+        private readonly IEventAggregator? _eventAggregator;
+        private readonly IMediator? _mediator;
         private string? _title;
 
         public string? Title
@@ -26,7 +26,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 
         public HomeViewModel()
         {
-            DisplayName = "Foundation Demo App";
+            
         }
 
         public HomeViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator, IServiceProvider serviceProvider)
@@ -34,7 +34,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             _eventAggregator = eventAggregator;
             _mediator = mediator;
             logger.LogDebug("HomeViewModel ctor called!");
-            DisplayName = "Foundation Demo App";
+           
 
             var testService = serviceProvider.GetService<TestService>();
 
@@ -44,8 +44,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
             Title = await _mediator.Send(new TitleQuery(), cancellationToken);
-
-
+            
             var tabs = IoC.GetAll<ITab>();
 
             foreach (var tab in tabs)

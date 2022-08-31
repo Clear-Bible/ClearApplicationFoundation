@@ -121,15 +121,15 @@
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                     Style="{StaticResource MaterialDesignListBox}">
 
-                <ListView.ItemTemplate>
+                <!--<ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="{DynamicResource PrimaryHueMidBrush}" BorderThickness="1">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
 
-                                    <!--  PROJECT TEXT  -->
+                                    --><!--  PROJECT TEXT  --><!--
                                     <StackPanel Margin="15,0,0,0" Orientation="Horizontal">
-                                        <!--  DELETE PROJECT BUTTON  -->
+                                        --><!--  DELETE PROJECT BUTTON  --><!--
                                         <Button
                                                 Width="30"
                                                 Height="30"
@@ -166,9 +166,9 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <!--  ==========================  -->
+                                --><!--  ==========================  -->
                                 <!--  TOOL BUTTONS  -->
-                                <!--  ==========================  -->
+                                <!--  ==========================  --><!--
                                 <StackPanel Orientation="Horizontal">
                                     <Button
                                             x:Name="NewProject"
@@ -256,7 +256,7 @@
                             </StackPanel>
                         </Border>
                     </DataTemplate>
-                </ListView.ItemTemplate>
+                </ListView.ItemTemplate>-->
                 <ListViewItem Content="Project #1" BorderBrush="Gray" BorderThickness="1" Margin="5,5,0,0"/>
                 <ListViewItem Content="Project #2" BorderBrush="Gray" BorderThickness="1" Margin="5,5,0,0"/>
                 <ListViewItem Content="Project #3" BorderBrush="Gray" BorderThickness="1" Margin="5,5,0,0"/>

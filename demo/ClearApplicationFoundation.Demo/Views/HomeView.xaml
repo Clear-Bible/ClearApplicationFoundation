@@ -3,11 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cm="http://caliburnmicro.com"
-    xmlns:controls="clr-namespace:ClearApplicationFoundation.Controls.IconPacks.Browser.Controls;assembly=ClearApplicationFoundation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:ClearApplicationFoundation.Demo.ViewModels"
+    xmlns:controls1="clr-namespace:ClearApplicationFoundation.Controls;assembly=ClearApplicationFoundation"
     d:DataContext="{d:DesignInstance Type=viewModels:HomeViewModel,
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
@@ -49,7 +49,7 @@
             Margin="10,0,10,10"
             cm:View.Model="{Binding ActiveItem}" />
 
-        <controls:SidebarExpander
+        <controls1:SidebarExpander
             Grid.Row="1"
             Grid.RowSpan="2"
             Grid.Column="0"
@@ -59,7 +59,7 @@
             BorderThickness="0"
             ExpandDirection="Left"
             IsExpanded="True">
-            <controls:SidebarExpander.Header>
+            <controls1:SidebarExpander.Header>
                 <TextBlock
                     BaselineOffset="100"
                     FontWeight="Bold"
@@ -70,9 +70,9 @@
                         <RotateTransform Angle="270" />
                     </TextBlock.LayoutTransform>
                 </TextBlock>
-            </controls:SidebarExpander.Header>
+            </controls1:SidebarExpander.Header>
             <Label Content="Replace ME!                                 " Foreground="Black" />
-        </controls:SidebarExpander>
+        </controls1:SidebarExpander>
     </Grid>
 
 

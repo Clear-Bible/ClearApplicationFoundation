@@ -17,17 +17,19 @@ namespace ClearApplicationFoundation.Demo.ViewModels
     public class ProjectPickerViewModel : WorkflowStepViewModel
     {
        
-        public ProjectPickerViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator, INavigationService navigationService) : base(eventAggregator, navigationService, logger, mediator)
+        public ProjectPickerViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator, INavigationService navigationService, ILifetimeScope? lifetimeScope) : base(navigationService, logger, eventAggregator, mediator, lifetimeScope)
         {
           
         }
 
-        protected async Task OnInitializeAsync(CancellationToken cancellationToken)
+        protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
 
            CanMoveForwards = true;
            CanMoveBackwards = true;
            EnableControls = true;
+
+           await Task.CompletedTask;
         }
     }
 }

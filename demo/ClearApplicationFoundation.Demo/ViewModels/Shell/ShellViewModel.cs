@@ -11,8 +11,8 @@ namespace ClearApplicationFoundation.Demo.ViewModels.Shell
             Title = "Foundation Demo Application";
         }
 
-        private string _title;
-        public string Title
+        private string? _title;
+        public string? Title
         {
             get => _title;
             set => Set(ref _title, value);
