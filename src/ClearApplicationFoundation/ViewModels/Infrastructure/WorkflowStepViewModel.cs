@@ -18,6 +18,11 @@ public abstract class WorkflowStepViewModel : ApplicationScreen, IWorkflowStepVi
         set => Set(ref _direction, value);
     }
 
+    protected WorkflowStepViewModel()
+    {
+        // allows view models to be used in design-time mode.
+    }
+
     //INavigationService? navigationService, ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope
     protected WorkflowStepViewModel(INavigationService navigationService, ILogger logger, IEventAggregator eventAggregator,IMediator mediator, ILifetimeScope? lifetimeScope) :
         base(navigationService, logger, eventAggregator, mediator, lifetimeScope)

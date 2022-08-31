@@ -21,6 +21,11 @@ public abstract class ValidatingApplicationScreen<TEntity> : ApplicationScreen, 
         set => Set(ref _validationResult, value);
     }
 
+    protected ValidatingApplicationScreen()
+    {
+
+    }
+
     protected ValidatingApplicationScreen(INavigationService? navigationService, ILogger? logger,  IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope,IValidator<TEntity>? validator) :
         base(navigationService, logger,  eventAggregator, mediator, lifetimeScope)
     {

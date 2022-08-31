@@ -42,6 +42,11 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             set => Set(ref _title, value);
         }
 
+        protected ApplicationScreen()
+        {
+            // allows view models to be used in design-time mode.
+        }
+
         protected ApplicationScreen(INavigationService? navigationService, ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope)
         {
             NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));

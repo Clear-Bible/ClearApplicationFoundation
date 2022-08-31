@@ -14,8 +14,13 @@ public abstract class ApplicationConductorAllActive<T> : Conductor<T>.Collection
     protected INavigationService? NavigationService { get; }
     protected IEventAggregator? EventAggregator { get; }
     protected IMediator? Mediator { get; }
-    protected ILogger Logger { get;  }
+    protected ILogger? Logger { get;  }
     protected ILifetimeScope? LifetimeScope { get; set; }
+
+    protected ApplicationConductorAllActive()
+    {
+        // allows view models to be used in design-time mode.
+    }
 
     protected ApplicationConductorAllActive(INavigationService? navigationService, ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope)
     {

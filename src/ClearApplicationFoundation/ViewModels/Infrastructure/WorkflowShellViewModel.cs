@@ -51,6 +51,11 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             }
         }
 
+        protected WorkflowShellViewModel()
+        {
+            // allows view models to be used in design-time mode.
+        }
+
         protected WorkflowShellViewModel(INavigationService? navigationService,  ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope)
         {
             Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator)); 
