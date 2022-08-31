@@ -93,7 +93,7 @@ namespace ClearApplicationFoundation.Framework.Behaviors
             base.OnDetaching();
         }
 
-        private void OnSourceInitialized(object sender, EventArgs e)
+        private void OnSourceInitialized(object? sender, EventArgs e)
         {
             UpdateWindowStyle();
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using Autofac;
 using Caliburn.Micro;
 using FluentValidation;
 using FluentValidation.Results;
@@ -11,6 +12,8 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure;
 
 public abstract class ValidatingApplicationScreen<TEntity> : ApplicationScreen, IDataErrorInfo
 {
+    public IValidator<TEntity>? Validator { get; }
+
     private ValidationResult? _validationResult;
     public ValidationResult? ValidationResult
     {
@@ -18,17 +21,11 @@ public abstract class ValidatingApplicationScreen<TEntity> : ApplicationScreen, 
         set => Set(ref _validationResult, value);
     }
 
-    protected ValidatingApplicationScreen(INavigationService? navigationService, ILogger? logger,  IEventAggregator? eventAggregator, IMediator? mediator, IValidator<TEntity>? validator) :
-        base(navigationService, logger,  eventAggregator, mediator)
+    protected ValidatingApplicationScreen(INavigationService? navigationService, ILogger? logger,  IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope,IValidator<TEntity>? validator) :
+        base(navigationService, logger,  eventAggregator, mediator, lifetimeScope)
     {
-        Validator = validator;
+        Validator = validator ?? throw new ArgumentNullException(nameof(validator));
     }
-
-    protected ValidatingApplicationScreen()
-    {
-
-    }
-
 
     public  string Error
     {
@@ -69,9 +66,5 @@ public abstract class ValidatingApplicationScreen<TEntity> : ApplicationScreen, 
     }
 
     protected abstract ValidationResult? Validate();
-
-    public IValidator<TEntity>? Validator { get; protected set; }
-
-
-      
+ 
 }

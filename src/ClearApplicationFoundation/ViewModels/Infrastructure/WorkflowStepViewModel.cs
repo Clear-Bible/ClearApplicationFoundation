@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using Caliburn.Micro;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -17,13 +18,9 @@ public abstract class WorkflowStepViewModel : ApplicationScreen, IWorkflowStepVi
         set => Set(ref _direction, value);
     }
 
-    protected WorkflowStepViewModel()
-    {
-
-    }
-
-    protected WorkflowStepViewModel(IEventAggregator eventAggregator, INavigationService navigationService, ILogger logger, IMediator mediator) :
-        base(navigationService, logger, eventAggregator, mediator)
+    //INavigationService? navigationService, ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope
+    protected WorkflowStepViewModel(INavigationService navigationService, ILogger logger, IEventAggregator eventAggregator,IMediator mediator, ILifetimeScope? lifetimeScope) :
+        base(navigationService, logger, eventAggregator, mediator, lifetimeScope)
     {
 
     }
@@ -137,8 +134,6 @@ public abstract class WorkflowStepViewModel : ApplicationScreen, IWorkflowStepVi
                 ShowBackButton = true;
                 ShowForwardButton = false;
             }
-
-
         }
     }
 }

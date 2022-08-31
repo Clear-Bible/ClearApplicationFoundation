@@ -175,7 +175,6 @@ namespace ClearApplicationFoundation
         protected override void Configure()
         {
             var serviceCollection = new ServiceCollection();
-
             var builder = new ContainerBuilder();
             PopulateServiceCollection(serviceCollection);
             builder.Populate(serviceCollection);

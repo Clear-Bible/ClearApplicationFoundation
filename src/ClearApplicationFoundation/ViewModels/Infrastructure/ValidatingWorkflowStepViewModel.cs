@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using Caliburn.Micro;
 using FluentValidation;
 using MediatR;
@@ -8,8 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ClearApplicationFoundation.ViewModels.Infrastructure;
 
-public abstract class ValidatingWorkflowStepViewModel<TEntity> 
-    : ValidatingApplicationScreen<TEntity>, IWorkflowStepViewModel
+public abstract class ValidatingWorkflowStepViewModel<TEntity> : ValidatingApplicationScreen<TEntity>, IWorkflowStepViewModel
 {
 
     private Direction _direction;
@@ -27,21 +27,16 @@ public abstract class ValidatingWorkflowStepViewModel<TEntity>
         get => enableControls_;
         set
         {
-            Logger.LogInformation(
+            Logger?.LogInformation(
                 $"WorkflowStepViewModel - Setting EnableControls to {value} at {DateTime.Now:HH:mm:ss.fff}");
             //(Parent as WorkflowShellViewModel).EnableControls = value;
             Set(ref enableControls_, value);
         }
     }
 
-    protected ValidatingWorkflowStepViewModel()
-    {
-
-    }
-
-    protected ValidatingWorkflowStepViewModel(IEventAggregator eventAggregator, INavigationService navigationService,
-        ILogger logger, IMediator mediator, IValidator<TEntity> validator)
-        : base(navigationService, logger, eventAggregator, mediator, validator)
+    protected ValidatingWorkflowStepViewModel(INavigationService navigationService, ILogger logger, IEventAggregator eventAggregator, 
+                                                IMediator mediator, ILifetimeScope? lifetimeScope, IValidator<TEntity> validator)
+                                                 : base(navigationService, logger, eventAggregator, mediator, lifetimeScope, validator)
     {
 
     }

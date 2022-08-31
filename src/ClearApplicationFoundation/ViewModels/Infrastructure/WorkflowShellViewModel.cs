@@ -19,6 +19,12 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         protected IMediator? Mediator { get; set; }
         protected ILifetimeScope? LifetimeScope { get; set; }
 
+        private string? _title;
+        public string? Title
+        {
+            get => _title;
+            set => Set(ref _title, value);
+        }
 
         private FlowDirection _windowFlowDirection = FlowDirection.LeftToRight;
         public FlowDirection WindowFlowDirection
@@ -45,21 +51,14 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             }
         }
 
-        protected WorkflowShellViewModel(ILifetimeScope? lifetimeScope)
+        protected WorkflowShellViewModel(INavigationService? navigationService,  ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope)
         {
-            LifetimeScope = lifetimeScope;
-        }
-        protected WorkflowShellViewModel(IMediator? mediator,  ILogger? logger, INavigationService? navigationService, IEventAggregator? eventAggregator, ILifetimeScope? lifetimeScope)
-        {
-            Mediator = mediator;
-            Logger = logger;
-            NavigationService = navigationService;
-            EventAggregator = eventAggregator;
-            LifetimeScope = lifetimeScope;
+            Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator)); 
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            LifetimeScope = lifetimeScope ?? throw new ArgumentNullException(nameof(lifetimeScope));
             Steps = new List<IWorkflowStepViewModel>();
-
-            //WindowFlowDirection = ProjectManager.CurrentLanguageFlowDirection;
-
         }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
@@ -72,12 +71,6 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         {
             EventAggregator!.Unsubscribe(this);
             return base.OnDeactivateAsync(close, cancellationToken);
-        }
-
-        public override Task ActivateItemAsync(IWorkflowStepViewModel item, CancellationToken cancellationToken = new CancellationToken())
-        {
-            // TODO:  do whatever needs to be done when a new workflow step has been activated.
-            return base.ActivateItemAsync(item, cancellationToken);
         }
 
         protected IWorkflowStepViewModel? CurrentStep { get; set; }

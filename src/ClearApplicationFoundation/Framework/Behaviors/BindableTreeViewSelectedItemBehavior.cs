@@ -74,13 +74,13 @@ namespace ClearApplicationFoundation.Framework.Behaviors
             {
                 if (container.DataContext == item)
                 {
-                    return container as TreeViewItem;
+                    return (container as TreeViewItem)!;
                 }
 
                 // Expand the current container
-                if (container is TreeViewItem && !((TreeViewItem) container).IsExpanded)
+                if (container is TreeViewItem viewItem && !viewItem.IsExpanded)
                 {
-                    container.SetValue(TreeViewItem.IsExpandedProperty, true);
+                    viewItem.SetValue(TreeViewItem.IsExpandedProperty, true);
                 }
 
                 // Try to generate the ItemsPresenter and the ItemsPanel.

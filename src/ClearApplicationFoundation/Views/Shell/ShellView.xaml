@@ -14,6 +14,7 @@
                           Visibility="Visible"
                           WindowState="Normal"
                           ShowTitleBar="True"
+                          
                           ResizeMode="CanResizeWithGrip"
                           Foreground="{DynamicResource MaterialDesignBody}"
                           Title="{Binding Title}"

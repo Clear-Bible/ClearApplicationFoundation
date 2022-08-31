@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Autofac;
 using Caliburn.Micro;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -14,10 +15,11 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
 
     public abstract class ApplicationScreen : Screen, IDisposable
     {
-        protected ILogger? Logger { get; private set; }
-        protected INavigationService? NavigationService { get; private set; }
-        protected IEventAggregator? EventAggregator { get; private set; }
-        protected IMediator? Mediator { get; private set; }
+        protected ILifetimeScope? LifetimeScope { get; }
+        protected ILogger? Logger { get; }
+        protected INavigationService? NavigationService { get; }
+        protected IEventAggregator? EventAggregator { get; }
+        protected IMediator? Mediator { get;  }
         
         private bool _isBusy;
         public bool IsBusy
@@ -40,30 +42,26 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             set => Set(ref _title, value);
         }
 
-        protected ApplicationScreen()
+        protected ApplicationScreen(INavigationService? navigationService, ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope)
         {
-
-        }
-
-        protected ApplicationScreen(INavigationService? navigationService, ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator)
-        {
-            NavigationService = navigationService;
-            Logger = logger;
-            EventAggregator = eventAggregator;
-            Mediator = mediator;
+            NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            LifetimeScope = lifetimeScope ?? throw new ArgumentNullException(nameof(lifetimeScope));
         }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            Logger.LogInformation($"Subscribing {this.GetType().Name} to the EventAggregator");
+            Logger?.LogInformation($"Subscribing {this.GetType().Name} to the EventAggregator");
             EventAggregator.SubscribeOnUIThread(this);
             return base.OnActivateAsync(cancellationToken);
         }
 
         protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            Logger.LogInformation($"Unsubscribing {this.GetType().Name} from the EventAggregator");
-            EventAggregator.Unsubscribe(this);
+            Logger?.LogInformation($"Unsubscribing {this.GetType().Name} from the EventAggregator");
+            EventAggregator?.Unsubscribe(this);
             return base.OnDeactivateAsync(close, cancellationToken);
         }
 
@@ -86,7 +84,7 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
 
         protected async Task SendProgressBarMessage(string message, double delayInSeconds = 1.0)
         {
-            Logger.LogInformation(message);
+            Logger?.LogInformation(message);
             await Task.Delay(TimeSpan.FromSeconds(delayInSeconds));
             await EventAggregator.PublishOnUIThreadAsync(
                 new ProgressBarMessage(message));
@@ -106,7 +104,7 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             IsBusy = true;
             try
             {
-                return Mediator.Send(request, cancellationToken);
+                return Mediator?.Send(request, cancellationToken)!;
             }
             finally
             {

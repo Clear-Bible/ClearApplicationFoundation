@@ -4,14 +4,14 @@ namespace ClearApplicationFoundation.ViewModels.Shell
 {
     public class ShellViewModel : Screen, IShellViewModel
     {
-        private string _title;
+        private string? _title;
 
         public ShellViewModel()
         {
             Title = "Clear Application Foundation";
         }
 
-        public string Title
+        public string? Title
         {
             get => _title;
             set => Set(ref _title, value);

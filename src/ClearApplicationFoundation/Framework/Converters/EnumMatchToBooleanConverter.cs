@@ -18,13 +18,13 @@ namespace ClearApplicationFoundation.Framework.Converters
                 StringComparison.InvariantCultureIgnoreCase);
         }
 
-        public object ConvertBack(object value, Type targetType,
+        public object? ConvertBack(object value, Type targetType,
             object parameter, CultureInfo culture)
         {
-            if (value == null || parameter == null)
+            if (value != null || parameter == null)
                 return null;
 
-            var useValue = (bool)value;
+            var useValue = (bool)(value ?? false);
             var targetValue = parameter.ToString();
             if (useValue)
                 return Enum.Parse(targetType, targetValue);

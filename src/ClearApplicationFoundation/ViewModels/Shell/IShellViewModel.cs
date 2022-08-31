@@ -2,7 +2,7 @@
 {
     public interface IShellViewModel
     {
-        public string Title
+        public string? Title
         {
             get;
             set;
