@@ -97,7 +97,7 @@ namespace ClearApplicationFoundation
         }
 
         protected virtual async Task ShowStartupDialog<TStartupDialogViewModel, TNavigateToViewModel>()
-            where TStartupDialogViewModel : notnull
+            where TStartupDialogViewModel : notnull, IStartupDialog
             where TNavigateToViewModel : notnull
         {
 
@@ -142,7 +142,7 @@ namespace ClearApplicationFoundation
                     mainWindow.WindowState = WindowState.Normal;
                 }
 
-                NavigateToViewModel<TNavigateToViewModel>();
+                NavigateToViewModel<TNavigateToViewModel>(startupViewModel.ExtraData);
             }
             else
             {
@@ -161,9 +161,9 @@ namespace ClearApplicationFoundation
             }
         }
 
-        protected void NavigateToViewModel<TViewModel>()
+        protected void NavigateToViewModel<TViewModel>(object? extraData = null)
         {
-            NavigationService?.NavigateToViewModel<TViewModel>();
+            NavigationService?.NavigateToViewModel<TViewModel>(extraData);
         }
 
 

@@ -16,7 +16,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 {
     public class HomeViewModel : ApplicationConductorOneActive<ITab>, IMainWindowViewModel
     {
-       
+        public string Parameter { get; set; }
 
         public HomeViewModel()
         {
@@ -46,6 +46,12 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             await ActivateItemAsync(Items[0], cancellationToken);
 
            
+        }
+
+        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        {
+            Logger.LogInformation($"Parameter set to {Parameter}");
+            return base.OnActivateAsync(cancellationToken);
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClearApplicationFoundation.Demo.ViewModels
 {
-    public class StartupViewModel : WorkflowShellViewModel
+    public class StartupViewModel : WorkflowShellViewModel, IStartupDialog
     {
         public bool CanCancel => true /* can always cancel */;
         public async void Cancel()
@@ -40,7 +40,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-
+            ExtraData = "flow";
             await base.OnInitializeAsync(cancellationToken);
 
             var views = IoC.GetAll<IWorkflowStepViewModel>();
@@ -57,5 +57,6 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             await ActivateItemAsync(Steps[0], cancellationToken);
         }
 
+        public object ExtraData { get; set; }
     }
 }
