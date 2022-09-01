@@ -1,4 +1,4 @@
-﻿namespace ClearApplicationFoundation.ViewModels.Shell
+﻿namespace ClearApplicationFoundation.ViewModels.Infrastructure
 {
     public interface IShellViewModel
     {

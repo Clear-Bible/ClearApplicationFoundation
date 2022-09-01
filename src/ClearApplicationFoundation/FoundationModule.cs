@@ -8,6 +8,7 @@ using ClearApplicationFoundation.Framework;
 using ClearApplicationFoundation.ViewModels;
 using ClearApplicationFoundation.ViewModels.Shell;
 using Microsoft.Extensions.DependencyInjection;
+using ClearApplicationFoundation.ViewModels.Infrastructure;
 
 namespace ClearApplicationFoundation
 {

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using ClearApplicationFoundation.ViewModels.Infrastructure;
 
 namespace ClearApplicationFoundation.ViewModels.Shell
 {

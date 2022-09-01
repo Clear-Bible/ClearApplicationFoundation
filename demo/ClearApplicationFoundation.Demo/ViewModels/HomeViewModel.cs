@@ -5,45 +5,36 @@ using System;
 
 using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using ClearApplicationFoundation.Demo.DependencyInjectionTest;
 using ClearApplicationFoundation.Demo.Features.Title;
 using ClearApplicationFoundation.Framework;
+using ClearApplicationFoundation.ViewModels.Infrastructure;
 using MediatR;
 
 namespace ClearApplicationFoundation.Demo.ViewModels
 {
-    public class HomeViewModel : Conductor<ITab>.Collection.OneActive, IMainWindowViewModel
+    public class HomeViewModel : ApplicationConductorOneActive<ITab>, IMainWindowViewModel
     {
-        private readonly IEventAggregator? _eventAggregator;
-        private readonly IMediator? _mediator;
-        private string? _title;
-
-        public string? Title
-        {
-            get => _title;
-            set => Set(ref _title, value);
-        }
+       
 
         public HomeViewModel()
         {
             
         }
 
-        public HomeViewModel(IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator, IServiceProvider serviceProvider)
+        public HomeViewModel(INavigationService navigationService, IEventAggregator eventAggregator, ILogger<HomeViewModel> logger, IMediator mediator, IServiceProvider serviceProvider, ILifetimeScope lifetimeScope): base(navigationService, logger, eventAggregator, mediator, lifetimeScope)
         {
-            _eventAggregator = eventAggregator;
-            _mediator = mediator;
             logger.LogDebug("HomeViewModel ctor called!");
-           
-
             var testService = serviceProvider.GetService<TestService>();
 
+            var testService2 = lifetimeScope.Resolve<TestService>();
 
         }
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            Title = await _mediator.Send(new TitleQuery(), cancellationToken);
+            Title = await Mediator.Send(new TitleQuery(), cancellationToken);
             
             var tabs = IoC.GetAll<ITab>();
 

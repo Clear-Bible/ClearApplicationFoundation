@@ -5,7 +5,6 @@ using ClearApplicationFoundation.Demo.Views;
 using ClearApplicationFoundation.Extensions;
 using ClearApplicationFoundation.Framework;
 using ClearApplicationFoundation.ViewModels.Infrastructure;
-using ClearApplicationFoundation.ViewModels.Shell;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,9 @@ namespace ClearApplicationFoundation.Demo
         {
 
             // IMPORTANT!  - override the default ShellViewModel from the foundation.
-            builder.RegisterType<ShellViewModel>().As<IShellViewModel>();
+            builder.RegisterType<ShellViewModel>().As<IShellViewModel>().SingleInstance();
+
+            builder.RegisterType<HomeViewModel>().As<IMainWindowViewModel>().SingleInstance();
 
             // Register validators from this assembly.
             builder.RegisterValidators(Assembly.GetExecutingAssembly());

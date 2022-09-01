@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using ClearApplicationFoundation.Framework;
+using ClearApplicationFoundation.ViewModels.Infrastructure;
 
 namespace ClearApplicationFoundation.ViewModels
 {

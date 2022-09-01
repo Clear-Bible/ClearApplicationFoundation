@@ -17,8 +17,8 @@ using ClearApplicationFoundation.Framework;
 using System.Globalization;
 using System.Threading;
 using Autofac.Extensions.DependencyInjection;
-using ClearApplicationFoundation.ViewModels.Shell;
 using Microsoft.Extensions.DependencyInjection;
+using ClearApplicationFoundation.ViewModels.Infrastructure;
 
 namespace ClearApplicationFoundation
 {
