@@ -205,6 +205,23 @@ namespace ClearApplicationFoundation
             builder.LoadModuleAssemblies();
         }
 
+        protected void LogDependencyInjectionRegistrations()
+        {
+            var componentRegistrations = Container!.ComponentRegistry.Registrations;
+
+            Logger?.LogDebug("************************************************");
+            Logger?.LogDebug("Dependency Injection Registrations");
+            foreach (var componentRegistration in componentRegistrations)
+            {
+                foreach (var componentRegistrationService in componentRegistration.Services)
+                {
+                    Logger?.LogDebug(componentRegistrationService.Description);
+                }
+
+            }
+            Logger?.LogDebug("************************************************");
+        }
+
 
         protected virtual void SetupLogging()
         {
