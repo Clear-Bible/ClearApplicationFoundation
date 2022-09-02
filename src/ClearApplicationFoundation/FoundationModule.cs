@@ -17,18 +17,6 @@ namespace ClearApplicationFoundation
         protected override void Load(ContainerBuilder builder)
         {
 
-            ////  register view models
-            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-            //    .Where(type => !type.Name.StartsWith("Shell") && type.Name.EndsWith("ViewModel"))
-            //    .AsSelf()
-            //    .InstancePerDependency();
-
-            ////  register views
-            //builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
-            //    .Where(type => !type.Name.StartsWith("Shell") && type.Name.EndsWith("View"))
-            //    .AsSelf()
-            //    .InstancePerDependency();
-
             //  register view models
             builder.RegisterAssemblyTypes(AssemblySource.Instance.ToArray())
                 .Where(type => type.Name.EndsWith("ViewModel"))

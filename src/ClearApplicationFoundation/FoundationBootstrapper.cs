@@ -1,32 +1,43 @@
 ﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Caliburn.Micro;
 using ClearApplicationFoundation.Extensions;
+using ClearApplicationFoundation.Framework;
 using ClearApplicationFoundation.ViewModels;
+using ClearApplicationFoundation.ViewModels.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using ClearApplicationFoundation.Framework;
-using System.Globalization;
-using System.Threading;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using ClearApplicationFoundation.ViewModels.Infrastructure;
+using System.Windows.Threading;
 
 namespace ClearApplicationFoundation
 {
+
+    public enum ApplicationExitCodes
+    {
+        AutofacContainerIsNull = 100,
+        MainWindowIsNull = 101,
+        EndUserExitedApplication = 102
+
+    }
     public class FoundationBootstrapper : BootstrapperBase
     {
         protected IContainer? Container { get; private set; }
 
         protected ILogger<FoundationBootstrapper>? Logger { get; private set; }
+
+        protected INavigationService? NavigationService { get; private set; }
 
         public FoundationBootstrapper()
         {
@@ -44,22 +55,15 @@ namespace ClearApplicationFoundation
 
         protected virtual void PreInitialize()
         {
-            //var code = Properties.Settings.Default.LanguageCode;
-
-            //if (!string.IsNullOrWhiteSpace(code))
-            //{
-            //    var culture = CultureInfo.GetCultureInfo(code);
-            //    Thread.CurrentThread.CurrentUICulture = culture;
-            //    Thread.CurrentThread.CurrentCulture = culture;
-            //}
+           //no-op
         }
 
-        protected INavigationService? NavigationService { get; private set; }
         protected override async void OnStartup(object sender, StartupEventArgs e)
         {
             await DisplayRootViewForAsync<IShellViewModel>();
 
-            Application.Current.MainWindow?.Hide();
+            HideMainWindow();
+
             AddFrameToMainWindow();
 
             ConfigureNavigationService();
@@ -67,9 +71,24 @@ namespace ClearApplicationFoundation
             await NavigateToMainWindow();
         }
 
+        protected virtual void HideMainWindow()
+        {
+            var mainWindow = Application.Current.MainWindow;
+            if (mainWindow == null)
+            {
+                var exitCode = (int)ApplicationExitCodes.MainWindowIsNull;
+                Logger?.LogError($"The application 'main' window is null. Exiting the application with code '{exitCode}' ({ApplicationExitCodes.MainWindowIsNull}");
+                Application.Current.Shutdown(exitCode);
+            }
+
+            if (mainWindow is { IsVisible: true })
+            {
+                mainWindow.Hide();
+            }
+        }
+
         protected virtual async Task NavigateToMainWindow()
         {
-
             EnsureApplicationMainWindowVisible();
             NavigateToViewModel<PlaceHolderMainWindowViewModel>();
             await Task.CompletedTask;
@@ -80,7 +99,9 @@ namespace ClearApplicationFoundation
             var mainWindow = Application.Current.MainWindow;
             if (mainWindow == null)
             {
-                Application.Current.Shutdown(-101);
+                var exitCode = (int)ApplicationExitCodes.MainWindowIsNull;
+                Logger?.LogError($"The application 'main' window is null. Exiting the application with code '{exitCode}' ({ApplicationExitCodes.MainWindowIsNull}");
+                Application.Current.Shutdown(exitCode);
             }
 
             if (!mainWindow!.IsVisible)
@@ -89,7 +110,7 @@ namespace ClearApplicationFoundation
             }
 
             // NB: It is important to change WindowState after the MainWindow has been shown.
-            //     Otherwise it will fall be hind all of the open apps.
+            //     Otherwise it will fall behind all of the open apps.
             if (mainWindow.WindowState == WindowState.Minimized)
             {
                 mainWindow.WindowState = WindowState.Normal;
@@ -97,14 +118,16 @@ namespace ClearApplicationFoundation
         }
 
         protected virtual async Task ShowStartupDialog<TStartupDialogViewModel, TNavigateToViewModel>()
-            where TStartupDialogViewModel : notnull, IStartupDialog
+            where TStartupDialogViewModel : IStartupDialog
             where TNavigateToViewModel : notnull
         {
 
             var mainWindow = Application.Current.MainWindow;
             if (mainWindow == null)
             {
-                Application.Current.Shutdown(-101);
+                var exitCode = (int)ApplicationExitCodes.MainWindowIsNull;
+                Logger?.LogError($"The application 'main' window is null. Exiting the application with code '{exitCode}' ({ApplicationExitCodes.MainWindowIsNull}");
+                Application.Current.Shutdown(exitCode);
             }
 
             if (mainWindow!.Visibility == Visibility.Visible)
@@ -115,7 +138,9 @@ namespace ClearApplicationFoundation
 
             if (Container == null)
             {
-                Application.Current.Shutdown(-100);
+                var exitCode = (int)ApplicationExitCodes.AutofacContainerIsNull;
+                Logger?.LogError($"The Autofac 'Container' is null. Exiting the application with code '{exitCode}' ({ApplicationExitCodes.AutofacContainerIsNull}");
+                Application.Current.Shutdown(exitCode);
             }
 
             var windowManager = Container?.Resolve<IWindowManager>();
@@ -136,17 +161,23 @@ namespace ClearApplicationFoundation
                 }
 
                 // NB: It is important to change WindowState after the MainWindow has been shown.
-                //     Otherwise it will fall be hind all of the open apps.
+                //     Otherwise it will fall behind all of the open apps.
                 if (mainWindow.WindowState == WindowState.Minimized)
                 {
                     mainWindow.WindowState = WindowState.Normal;
                 }
 
+                // This passes the data to the view model we're navigating to.  The
+                // view model should have a property named "Parameter" which can be
+                // strongly typed, for example  - public string Parameter { get ;set }
                 NavigateToViewModel<TNavigateToViewModel>(startupViewModel.ExtraData);
             }
             else
             {
-                Application.Current.Shutdown(-102);
+                var exitCode = (int)ApplicationExitCodes.EndUserExitedApplication;
+                Logger?.LogError($"The end user has canceled the startup dialog. Exiting the application with code '{exitCode}' ({ApplicationExitCodes.EndUserExitedApplication}");
+                Application.Current.Shutdown(exitCode);
+                
             }
         }
 
@@ -304,5 +335,20 @@ namespace ClearApplicationFoundation
             Panel.SetZIndex(frame, 0);
             grid.Children.Add(frame);
         }
+
+        #region Global error handling
+        /// <summary>
+        /// Handle the system wide exceptions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+
+            Logger?.LogError(e.Exception, "An unhandled error as occurred");
+            MessageBox.Show(e.Exception.Message, "An error as occurred", MessageBoxButton.OK);
+        }
+        #endregion
     }
 }
