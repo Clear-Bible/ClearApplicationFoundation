@@ -25,12 +25,12 @@ namespace ClearApplicationFoundation.Framework.Converters
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool IsInverted = parameter == null ? false : (bool)parameter;
-            bool IsVisible = value == null ? false : (bool)value;
-            if (IsVisible)
-                return IsInverted ? Visibility.Hidden : Visibility.Visible;
+            var isInverted = parameter != null && (bool)parameter;
+            var isVisible = value != null && (bool)value;
+            if (isVisible)
+                return isInverted ? Visibility.Collapsed : Visibility.Visible;
             else
-                return IsInverted ? Visibility.Visible : Visibility.Hidden;
+                return isInverted ? Visibility.Visible : Visibility.Collapsed;
         }
 
         /// <summary>
@@ -44,10 +44,10 @@ namespace ClearApplicationFoundation.Framework.Converters
         /// <returns></returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Visibility visiblility = value == null ? Visibility.Hidden : (Visibility)value;
-            bool IsInverted = parameter == null ? false : (bool)parameter;
+            var visibility = value == null ? Visibility.Collapsed : (Visibility)value;
+            var IsInverted = parameter == null ? false : (bool)parameter;
 
-            return (visiblility == Visibility.Visible) != IsInverted;
+            return (visibility == Visibility.Visible) != IsInverted;
         }
     }
 }
