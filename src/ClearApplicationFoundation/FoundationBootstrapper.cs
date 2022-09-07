@@ -11,11 +11,9 @@ using Serilog;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -284,14 +282,25 @@ namespace ClearApplicationFoundation
 
         protected override object GetInstance(Type service, string key)
         {
+            Logger!.LogInformation($"GetInstance - fetching '{service.Name}' from DI container.");
+
             return string.IsNullOrEmpty(key) ? Container!.Resolve(service) : Container!.ResolveNamed(key, service);
         }
 
         protected override IEnumerable<object> GetAllInstances(Type service)
         {
             var type = typeof(IEnumerable<>).MakeGenericType(service);
+            var instances = (Container?.Resolve(type) as IEnumerable<object>)!.ToList();
 
-            return (Container?.Resolve(type) as IEnumerable<object>)!;
+            Logger!.LogInformation($"GetAllInstances - Found {instances.Count} of type '{service.FullName}' for ");
+
+            if (instances is { Count: > 1 } && service.Name == "IMediator")
+            {
+                Logger!.LogInformation($"Found {instances.Count} instances of IMediator, returning just one.");
+                return new List<object>(new [] {instances.First()}!);
+            }
+
+            return instances;
         }
 
 
