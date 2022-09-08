@@ -53,7 +53,7 @@ namespace ClearApplicationFoundation
 
         protected virtual void PreInitialize()
         {
-           //no-op
+            Application.Current.Deactivated += ApplicationOnDeactivated;
         }
 
         protected override async void OnStartup(object sender, StartupEventArgs e)
@@ -88,6 +88,7 @@ namespace ClearApplicationFoundation
         protected virtual async Task NavigateToMainWindow()
         {
             EnsureApplicationMainWindowVisible();
+            RestoreMainWindowState();
             NavigateToViewModel<PlaceHolderMainWindowViewModel>();
             await Task.CompletedTask;
         }
@@ -152,7 +153,7 @@ namespace ClearApplicationFoundation
 
             if (result.HasValue && result.Value)
             {
-
+                RestoreMainWindowState();
                 if (!mainWindow.IsVisible)
                 {
                     mainWindow.Show();
@@ -180,6 +181,21 @@ namespace ClearApplicationFoundation
                 Application.Current.Shutdown(exitCode);
                 
             }
+        }
+
+        private void ApplicationOnDeactivated(object? sender, EventArgs e)
+        {
+            SaveMainWindowState();
+        }
+
+        protected virtual void RestoreMainWindowState()
+        {
+            //no-op
+        }
+
+        protected virtual void SaveMainWindowState()
+        {
+
         }
 
         private void ConfigureNavigationService()
@@ -361,6 +377,13 @@ namespace ClearApplicationFoundation
             Logger?.LogError(e.Exception, "An unhandled error as occurred");
             MessageBox.Show(e.Exception.Message, "An error as occurred", MessageBoxButton.OK);
         }
+
+        protected override void OnExit(object sender, EventArgs e)
+        {
+            Application.Current.Deactivated -= ApplicationOnDeactivated;
+            base.OnExit(sender, e);
+        }
+
         #endregion
     }
 }
