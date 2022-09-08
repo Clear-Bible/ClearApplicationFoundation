@@ -115,7 +115,7 @@ namespace ClearApplicationFoundation
             }
         }
 
-        protected virtual async Task ShowStartupDialog<TStartupDialogViewModel, TNavigateToViewModel>()
+        protected virtual async Task ShowStartupDialog<TStartupDialogViewModel, TNavigateToViewModel>(double displayDelayInMilliseconds = 100)
             where TStartupDialogViewModel : IStartupDialog
             where TNavigateToViewModel : notnull
         {
@@ -164,6 +164,9 @@ namespace ClearApplicationFoundation
                 {
                     mainWindow.WindowState = WindowState.Normal;
                 }
+
+                // wait a short amount of time to allow the ShellView to be rendered.
+                await Task.Delay(TimeSpan.FromMilliseconds(displayDelayInMilliseconds));
 
                 // This passes the data to the view model we're navigating to.  The
                 // view model should have a property named "Parameter" which can be

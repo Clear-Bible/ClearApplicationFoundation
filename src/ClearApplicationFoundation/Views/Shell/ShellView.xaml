@@ -6,6 +6,7 @@
                           xmlns:viewModels="clr-namespace:ClearApplicationFoundation.ViewModels"
                           xmlns:shell="clr-namespace:ClearApplicationFoundation.ViewModels.Shell"
                           xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                          xmlns:system="clr-namespace:System;assembly=System.Runtime"
                           mc:Ignorable="d" 
                           d:DesignHeight="450" d:DesignWidth="800"
                           d:DataContext="{d:DesignInstance Type=shell:ShellViewModel, IsDesignTimeCreatable=True}"
@@ -22,13 +23,18 @@
                           Background="{DynamicResource MaterialDesignPaper}"
                           TextElement.FontWeight="Medium"
                           TextElement.FontSize="14">
-    <!--
-      WindowTitleBrush="{DynamicResource MaterialDesignPaper}"
-                          TitleForeground="{DynamicResource MaterialDesignBody}"-->
+     <Window.Resources>
+         <system:Boolean x:Key="True">True</system:Boolean>
+         <system:Boolean x:Key="False">False</system:Boolean>
+        <BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></BoolToVisibilityConverter>
+     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
+        <Label Content="Loading application.  Please wait." VerticalAlignment="Center" HorizontalAlignment="Center" 
+               FontSize="40" 
+               Visibility="{Binding LoadingApplication, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={StaticResource True}}"></Label>
        <!--Frame will be added into Grid.Row="0" during the application startup-->
     </Grid>
 
