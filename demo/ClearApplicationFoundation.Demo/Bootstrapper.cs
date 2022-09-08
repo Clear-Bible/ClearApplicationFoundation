@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using ClearApplicationFoundation.Demo.DependencyInjectionTest;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using ShellViewModel = ClearApplicationFoundation.Demo.ViewModels.Shell.ShellViewModel;
 
 namespace ClearApplicationFoundation.Demo;
@@ -25,15 +26,14 @@ internal class Bootstrapper : FoundationBootstrapper
 
     protected override async Task NavigateToMainWindow()
     {
-
         // Show the StartupViewModel as a dialog, then navigate to HomeViewModel
         // if the dialog result is "true"
         await ShowStartupDialog<StartupViewModel, HomeViewModel>();
-        //await ShowStartupDialog<ProjectPickerViewModel, ProjectSetupViewModel>();
     }
 
     protected override void PostInitialize()
     {
+        Logger?.LogInformation("PostInitialize called.");
         base.PostInitialize();
     }
 
@@ -43,6 +43,15 @@ internal class Bootstrapper : FoundationBootstrapper
         base.PopulateServiceCollection(serviceCollection);
     }
 
-  
+    protected override void RestoreMainWindowState()
+    {
+        Logger?.LogInformation("RestoreMainWindowState called.");
+        base.RestoreMainWindowState();
+    }
 
+    protected override void SaveMainWindowState()
+    {
+        Logger?.LogInformation("SaveMainWindowState called.");
+        base.SaveMainWindowState();
+    }
 }
