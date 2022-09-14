@@ -37,6 +37,8 @@ namespace ClearApplicationFoundation
 
         protected INavigationService? NavigationService { get; private set; }
 
+        protected bool ExitingApplication { get; private set; }
+
         public FoundationBootstrapper()
         {
             // ReSharper disable VirtualMemberCallInConstructor
@@ -255,19 +257,23 @@ namespace ClearApplicationFoundation
 
         protected void LogDependencyInjectionRegistrations()
         {
-            var componentRegistrations = Container!.ComponentRegistry.Registrations;
-
-            Logger?.LogDebug("************************************************");
-            Logger?.LogDebug("Dependency Injection Registrations");
-            foreach (var componentRegistration in componentRegistrations)
+            if (!ExitingApplication)
             {
-                foreach (var componentRegistrationService in componentRegistration.Services)
+                var componentRegistrations = Container!.ComponentRegistry.Registrations;
+
+                Logger?.LogDebug("************************************************");
+                Logger?.LogDebug("Dependency Injection Registrations");
+                foreach (var componentRegistration in componentRegistrations)
                 {
-                    Logger?.LogDebug(componentRegistrationService.Description);
+                    foreach (var componentRegistrationService in componentRegistration.Services)
+                    {
+                        Logger?.LogDebug(componentRegistrationService.Description);
+                    }
+
                 }
 
+                Logger?.LogDebug("************************************************");
             }
-            Logger?.LogDebug("************************************************");
         }
 
 
@@ -301,8 +307,11 @@ namespace ClearApplicationFoundation
 
         protected override object GetInstance(Type service, string key)
         {
-            Logger!.LogInformation($"GetInstance - fetching '{service.Name}' from DI container.");
-
+            if (!ExitingApplication)
+            {
+                Logger!.LogInformation($"GetInstance - fetching '{service.Name}' from DI container.");
+            }
+           
             return string.IsNullOrEmpty(key) ? Container!.Resolve(service) : Container!.ResolveNamed(key, service);
         }
 
@@ -311,7 +320,10 @@ namespace ClearApplicationFoundation
             var type = typeof(IEnumerable<>).MakeGenericType(service);
             var instances = (Container?.Resolve(type) as IEnumerable<object>)!.ToList();
 
-            Logger!.LogInformation($"GetAllInstances - Found {instances.Count} of type '{service.FullName}' for ");
+            if (!ExitingApplication)
+            {
+                Logger!.LogInformation($"GetAllInstances - Found {instances.Count} of type '{service.FullName}'.");
+            }
 
             if (instances is { Count: > 1 } && service.Name == "IMediator")
             {
@@ -380,6 +392,7 @@ namespace ClearApplicationFoundation
 
         protected override void OnExit(object sender, EventArgs e)
         {
+            ExitingApplication = true;
             Application.Current.Deactivated -= ApplicationOnDeactivated;
             base.OnExit(sender, e);
         }
