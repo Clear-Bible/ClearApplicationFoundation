@@ -39,7 +39,7 @@ namespace ClearApplicationFoundation
 
         protected bool ExitingApplication { get; private set; }
 
-        protected bool DependencyInjectionLoggingOn { get; set; } = true;
+        protected bool DependencyInjectionLogging { get; set; } = false;
 
         public FoundationBootstrapper()
         {
@@ -256,7 +256,7 @@ namespace ClearApplicationFoundation
 
         protected void LogDependencyInjectionRegistrations()
         {
-            if (!ExitingApplication && DependencyInjectionLoggingOn)
+            if (!ExitingApplication && DependencyInjectionLogging)
             {
                 var componentRegistrations = Container!.ComponentRegistry.Registrations;
 
@@ -306,7 +306,7 @@ namespace ClearApplicationFoundation
 
         protected override object GetInstance(Type service, string key)
         {
-            if (!ExitingApplication && DependencyInjectionLoggingOn)
+            if (!ExitingApplication && DependencyInjectionLogging)
             {
                 Logger!.LogInformation($"GetInstance - fetching '{service.Name}' from DI container.");
             }
@@ -319,14 +319,14 @@ namespace ClearApplicationFoundation
             var type = typeof(IEnumerable<>).MakeGenericType(service);
             var instances = (Container?.Resolve(type) as IEnumerable<object>)!.ToList();
 
-            if (!ExitingApplication && DependencyInjectionLoggingOn)
+            if (!ExitingApplication && DependencyInjectionLogging)
             {
                 Logger!.LogInformation($"GetAllInstances - Found {instances.Count} of type '{service.FullName}'.");
             }
 
             if (instances is { Count: > 1 } && service.Name == "IMediator")
             {
-                if (DependencyInjectionLoggingOn)
+                if (DependencyInjectionLogging)
                     Logger!.LogInformation($"Found {instances.Count} instances of IMediator, returning just one.");
                 return new List<object>(new [] {instances.First()}!);
             }
