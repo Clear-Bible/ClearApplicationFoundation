@@ -68,7 +68,7 @@ namespace ClearApplicationFoundation.Extensions
         //    return sortedItems;
         //}
 
-        public static IEnumerable<TService> ResolveOrdered<TService>(this IComponentContext context, string orderingMetadataName)
+        public static IEnumerable<TService> ResolveOrdered<TService>(this IComponentContext context, string orderingMetadataName = "Order")
         {
             var itemsWithMeta = context.Resolve<IEnumerable<Meta<TService>>>();
             var sortedItems = itemsWithMeta
@@ -79,7 +79,7 @@ namespace ClearApplicationFoundation.Extensions
             return sortedItems;
         }
 
-        public static IEnumerable<TService> ResolveKeyedOrdered<TService>(this IComponentContext context, string key,  string orderingMetadataName)
+        public static IEnumerable<TService> ResolveKeyedOrdered<TService>(this IComponentContext context, string key, string orderingMetadataName = "Order")
         {
             var itemsWithMeta = context.ResolveKeyed<IEnumerable<Meta<TService>>>(key);
             var sortedItems = itemsWithMeta
