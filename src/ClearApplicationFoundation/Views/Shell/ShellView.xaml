@@ -7,6 +7,7 @@
                           xmlns:shell="clr-namespace:ClearApplicationFoundation.ViewModels.Shell"
                           xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                           xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                          xmlns:converters="clr-namespace:ClearApplicationFoundation.Framework.Converters"
                           mc:Ignorable="d" 
                           d:DesignHeight="450" d:DesignWidth="800"
                           d:DataContext="{d:DesignInstance Type=shell:ShellViewModel, IsDesignTimeCreatable=True}"
@@ -26,7 +27,7 @@
      <Window.Resources>
          <system:Boolean x:Key="True">True</system:Boolean>
          <system:Boolean x:Key="False">False</system:Boolean>
-        <BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></BoolToVisibilityConverter>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BoolToVisibilityConverter>
      </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>

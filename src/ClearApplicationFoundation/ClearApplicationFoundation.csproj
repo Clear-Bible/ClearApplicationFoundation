@@ -20,12 +20,6 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
-    <PackageReference Include="Dirkster.AvalonDock" Version="4.70.3" />
-    <PackageReference Include="Dirkster.AvalonDock.Themes.Aero" Version="4.70.3" />
-    <PackageReference Include="Dirkster.AvalonDock.Themes.Expression" Version="4.70.3" />
-    <PackageReference Include="Dirkster.AvalonDock.Themes.Metro" Version="4.70.3" />
-    <PackageReference Include="Dirkster.AvalonDock.Themes.VS2010" Version="4.70.3" />
-    <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.70.3" />
     <PackageReference Include="FluentValidation" Version="11.2.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.1" />
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
