@@ -37,6 +37,10 @@ namespace ClearApplicationFoundation
 
         protected INavigationService? NavigationService { get; private set; }
 
+        protected bool ExitingApplication { get; private set; }
+
+        protected bool DependencyInjectionLogging { get; set; } = false;
+
         public FoundationBootstrapper()
         {
             // ReSharper disable VirtualMemberCallInConstructor
@@ -230,11 +234,8 @@ namespace ClearApplicationFoundation
             LoadModules(builder);
 
             Container = builder.Build();
-
+            
             SetupLogging();
-
-           
-
         }
 
 
@@ -255,19 +256,23 @@ namespace ClearApplicationFoundation
 
         protected void LogDependencyInjectionRegistrations()
         {
-            var componentRegistrations = Container!.ComponentRegistry.Registrations;
-
-            Logger?.LogDebug("************************************************");
-            Logger?.LogDebug("Dependency Injection Registrations");
-            foreach (var componentRegistration in componentRegistrations)
+            if (!ExitingApplication && DependencyInjectionLogging)
             {
-                foreach (var componentRegistrationService in componentRegistration.Services)
+                var componentRegistrations = Container!.ComponentRegistry.Registrations;
+
+                Logger?.LogDebug("************************************************");
+                Logger?.LogDebug("Dependency Injection Registrations");
+                foreach (var componentRegistration in componentRegistrations)
                 {
-                    Logger?.LogDebug(componentRegistrationService.Description);
+                    foreach (var componentRegistrationService in componentRegistration.Services)
+                    {
+                        Logger?.LogDebug(componentRegistrationService.Description);
+                    }
+
                 }
 
+                Logger?.LogDebug("************************************************");
             }
-            Logger?.LogDebug("************************************************");
         }
 
 
@@ -280,7 +285,6 @@ namespace ClearApplicationFoundation
         // ReSharper disable once RedundantAssignment
         protected void SetupLogging(string logPath, LogEventLevel logLevel = LogEventLevel.Information, string outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] [{SourceContext}] {Message}{NewLine}{Exception}")
         {
-
 #if DEBUG
             logLevel = LogEventLevel.Verbose;
 #endif
@@ -297,12 +301,16 @@ namespace ClearApplicationFoundation
             Logger = Container!.Resolve<ILogger<FoundationBootstrapper>>();
 
             Logger.LogDebug($"Application logging has been configured.  Writing logs to '{logPath}'");
+            
         }
 
         protected override object GetInstance(Type service, string key)
         {
-            Logger!.LogInformation($"GetInstance - fetching '{service.Name}' from DI container.");
-
+            if (!ExitingApplication && DependencyInjectionLogging)
+            {
+                Logger!.LogInformation($"GetInstance - fetching '{service.Name}' from DI container.");
+            }
+           
             return string.IsNullOrEmpty(key) ? Container!.Resolve(service) : Container!.ResolveNamed(key, service);
         }
 
@@ -311,11 +319,18 @@ namespace ClearApplicationFoundation
             var type = typeof(IEnumerable<>).MakeGenericType(service);
             var instances = (Container?.Resolve(type) as IEnumerable<object>)!.ToList();
 
-            Logger!.LogInformation($"GetAllInstances - Found {instances.Count} of type '{service.FullName}' for ");
+            if (!ExitingApplication && DependencyInjectionLogging)
+            {
+                Logger!.LogInformation($"GetAllInstances - Found {instances.Count} of type '{service.FullName}'.");
+            }
 
             if (instances is { Count: > 1 } && service.Name == "IMediator")
             {
-                Logger!.LogInformation($"Found {instances.Count} instances of IMediator, returning just one.");
+                if (DependencyInjectionLogging)
+                {
+                    Logger!.LogInformation($"Found {instances.Count} instances of IMediator, returning just one.");
+                }
+
                 return new List<object>(new [] {instances.First()}!);
             }
 
@@ -373,13 +388,13 @@ namespace ClearApplicationFoundation
         protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             e.Handled = true;
-
             Logger?.LogError(e.Exception, "An unhandled error as occurred");
             MessageBox.Show(e.Exception.Message, "An error as occurred", MessageBoxButton.OK);
         }
 
         protected override void OnExit(object sender, EventArgs e)
         {
+            ExitingApplication = true;
             Application.Current.Deactivated -= ApplicationOnDeactivated;
             base.OnExit(sender, e);
         }

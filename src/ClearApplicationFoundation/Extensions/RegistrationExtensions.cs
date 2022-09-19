@@ -1,11 +1,11 @@
 ﻿using Autofac;
 using Autofac.Builder;
+using Autofac.Features.Metadata;
 using Autofac.Features.Scanning;
 using FluentValidation;
-using System.IO;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -28,7 +28,7 @@ namespace ClearApplicationFoundation.Extensions
                 .ExternallyOwned();
         }
 
-     
+
         public static void LoadModuleAssemblies(this ContainerBuilder builder, string searchPattern = "*.Module.dll", SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
             var path = AppDomain.CurrentDomain.BaseDirectory;
@@ -52,6 +52,41 @@ namespace ClearApplicationFoundation.Extensions
 
             return assemblies;
         }
- 
+
+
+        //public static IEnumerable<TService> ResolveOrdered<TService>(this Autofac.ILifetimeScope lifeTimeScope, string orderingMetadataName)
+        //{
+        //    var itemsWithMeta = lifeTimeScope.Resolve<IEnumerable<Meta<TService>>>();
+        //    var sortedItems = itemsWithMeta
+        //        .OrderBy(m =>
+        //            Convert.ToInt32(m.Metadata[orderingMetadataName]))
+        //        .Select(m => m.Value);
+
+        //    return sortedItems;
+        //}
+
+        public static IEnumerable<TService> ResolveOrdered<TService>(this IComponentContext context, string orderingMetadataName = "Order")
+        {
+            var itemsWithMeta = context.Resolve<IEnumerable<Meta<TService>>>();
+            var sortedItems = itemsWithMeta
+                .OrderBy(m =>
+                    Convert.ToInt32(m.Metadata[orderingMetadataName]))
+                .Select(m => m.Value);
+
+            return sortedItems;
+        }
+
+        public static IEnumerable<TService> ResolveKeyedOrdered<TService>(this IComponentContext context, string key,  string orderingMetadataName = "Order")
+        {
+            var itemsWithMeta = context.ResolveKeyed<IEnumerable<Meta<TService>>>(key);
+            var sortedItems = itemsWithMeta
+                .OrderBy(m =>
+                    Convert.ToInt32(m.Metadata[orderingMetadataName]))
+                .Select(m => m.Value);
+
+            return sortedItems;
+        }
+
+
     }
 }
