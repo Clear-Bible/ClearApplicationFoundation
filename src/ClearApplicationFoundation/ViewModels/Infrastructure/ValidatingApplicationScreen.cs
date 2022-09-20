@@ -23,7 +23,7 @@ public abstract class ValidatingApplicationScreen<TEntity> : ApplicationScreen, 
 
     protected ValidatingApplicationScreen()
     {
-
+        // allows view models to be used in design-time mode.
     }
 
     protected ValidatingApplicationScreen(INavigationService? navigationService, ILogger? logger,  IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope,IValidator<TEntity>? validator) :

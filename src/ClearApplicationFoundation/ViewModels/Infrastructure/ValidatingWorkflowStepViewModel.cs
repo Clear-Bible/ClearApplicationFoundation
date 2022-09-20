@@ -34,6 +34,10 @@ public abstract class ValidatingWorkflowStepViewModel<TEntity> : ValidatingAppli
         }
     }
 
+    protected ValidatingWorkflowStepViewModel()
+    {
+        // allows view models to be used in design-time mode.
+    }
     protected ValidatingWorkflowStepViewModel(INavigationService navigationService, ILogger logger, IEventAggregator eventAggregator, 
                                                 IMediator mediator, ILifetimeScope? lifetimeScope, IValidator<TEntity> validator)
                                                  : base(navigationService, logger, eventAggregator, mediator, lifetimeScope, validator)
