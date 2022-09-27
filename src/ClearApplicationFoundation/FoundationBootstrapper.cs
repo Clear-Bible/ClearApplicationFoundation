@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Serilog.Sinks.WPF;
 
 namespace ClearApplicationFoundation
 {
@@ -293,6 +294,7 @@ namespace ClearApplicationFoundation
                 .MinimumLevel.Is(logLevel)
                 .WriteTo.File(logPath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day)
                 .WriteTo.Debug(outputTemplate: outputTemplate)
+                .WriteToSimpleAndRichTextBox()
                 .CreateLogger();
 
             var loggerFactory = Container!.Resolve<ILoggerFactory>();

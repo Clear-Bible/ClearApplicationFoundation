@@ -8,6 +8,7 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:ClearApplicationFoundation.Demo.ViewModels"
+    xmlns:wpf="clr-namespace:Serilog.Sinks.WPF;assembly=Serilog.Sinks.WPF"
     d:DataContext="{d:DesignInstance Type=viewModels:HomeViewModel,
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
@@ -160,7 +161,10 @@
                     </TextBlock.LayoutTransform>
                 </TextBlock>
             </controls1:SidebarExpander.Header>
-            <Label Content="Replace ME!                                 " Foreground="Black" />
+            <StackPanel Orientation="Vertical">
+                <Label Content="Replace ME!                                 " Foreground="Black" />
+                <wpf:SimpleLogTextBox Background="Bisque" ScrollBarVisibility="Auto" VerticalAlignment="Stretch" MinHeight="300" />
+            </StackPanel>
         </controls1:SidebarExpander>
     </Grid>
 
