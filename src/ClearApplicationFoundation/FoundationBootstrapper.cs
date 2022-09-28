@@ -285,10 +285,6 @@ namespace ClearApplicationFoundation
         // ReSharper disable once RedundantAssignment
         protected void SetupLogging(string logPath, LogEventLevel logLevel = LogEventLevel.Information, string outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] [{SourceContext}] {Message}{NewLine}{Exception}")
         {
-#if DEBUG
-            logLevel = LogEventLevel.Verbose;
-#endif
-
             var log = new LoggerConfiguration()
                 .MinimumLevel.Is(logLevel)
                 .WriteTo.File(logPath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day)
@@ -308,7 +304,7 @@ namespace ClearApplicationFoundation
         {
             if (!ExitingApplication && DependencyInjectionLogging)
             {
-                Logger!.LogInformation($"GetInstance - fetching '{service.Name}' from DI container.");
+                Logger!.LogDebug($"GetInstance - fetching '{service.Name}' from DI container.");
             }
            
             return string.IsNullOrEmpty(key) ? Container!.Resolve(service) : Container!.ResolveNamed(key, service);
@@ -321,14 +317,14 @@ namespace ClearApplicationFoundation
 
             if (!ExitingApplication && DependencyInjectionLogging)
             {
-                Logger!.LogInformation($"GetAllInstances - Found {instances.Count} of type '{service.FullName}'.");
+                Logger!.LogDebug($"GetAllInstances - Found {instances.Count} of type '{service.FullName}'.");
             }
 
             if (instances is { Count: > 1 } && service.Name == "IMediator")
             {
                 if (DependencyInjectionLogging)
                 {
-                    Logger!.LogInformation($"Found {instances.Count} instances of IMediator, returning just one.");
+                    Logger!.LogDebug($"Found {instances.Count} instances of IMediator, returning just one.");
                 }
 
                 return new List<object>(new [] {instances.First()}!);
@@ -349,7 +345,7 @@ namespace ClearApplicationFoundation
         /// <exception cref="NullReferenceException"></exception>
         private void AddFrameToMainWindow()
         {
-            Logger?.LogInformation("Adding Frame to ShellView grid control.");
+            Logger?.LogDebug("Adding Frame to ShellView grid control.");
 
             var frameSet = Container?.Resolve<FrameSet>();
 
