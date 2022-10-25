@@ -19,6 +19,12 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         protected IMediator? Mediator { get; set; }
         protected ILifetimeScope? LifetimeScope { get; set; }
 
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => Set(ref _isBusy, value);
+        }
+
         private string? _title;
         public string? Title
         {
@@ -41,6 +47,8 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         }
 
         private bool _enableControls;
+        private bool _isBusy;
+
         public bool EnableControls
         {
             get => _enableControls;

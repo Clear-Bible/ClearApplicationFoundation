@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Autofac.Core;
 
 namespace ClearApplicationFoundation.Extensions
 {
@@ -76,6 +77,17 @@ namespace ClearApplicationFoundation.Extensions
             return sortedItems;
         }
 
+        public static IEnumerable<TService> ResolveOrdered<TService>(this IComponentContext context, IEnumerable<Parameter> parameters, string orderingMetadataName = "Order")
+        {
+            var itemsWithMeta = context.Resolve<IEnumerable<Meta<TService>>>(parameters);
+            var sortedItems = itemsWithMeta
+                .OrderBy(m =>
+                    Convert.ToInt32(m.Metadata[orderingMetadataName]))
+                .Select(m => m.Value);
+
+            return sortedItems;
+        }
+
         public static IEnumerable<TService> ResolveKeyedOrdered<TService>(this IComponentContext context, string key,  string orderingMetadataName = "Order")
         {
             var itemsWithMeta = context.ResolveKeyed<IEnumerable<Meta<TService>>>(key);
@@ -87,6 +99,17 @@ namespace ClearApplicationFoundation.Extensions
             return sortedItems;
         }
 
+        public static IEnumerable<TService> ResolveKeyedOrdered<TService>(this IComponentContext context, string key, IEnumerable<Parameter> parameters, string orderingMetadataName = "Order")
+        {
+            var itemsWithMeta = context.ResolveKeyed<IEnumerable<Meta<TService>>>(key, parameters);
+            var sortedItems = itemsWithMeta
+                .OrderBy(m =>
+                    Convert.ToInt32(m.Metadata[orderingMetadataName]))
+                .Select(m => m.Value);
 
+            return sortedItems;
+        }
+
+        //IEnumerable<Parameter> parameters
     }
 }
