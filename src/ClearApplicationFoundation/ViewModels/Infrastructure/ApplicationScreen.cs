@@ -21,8 +21,8 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         protected IEventAggregator? EventAggregator { get; }
         protected IMediator? Mediator { get;  }
         
-        private bool _isBusy;
-        public bool IsBusy
+        protected bool _isBusy;
+        public virtual bool IsBusy
         {
             get => _isBusy;
             set => Set(ref _isBusy, value, nameof(IsBusy));
