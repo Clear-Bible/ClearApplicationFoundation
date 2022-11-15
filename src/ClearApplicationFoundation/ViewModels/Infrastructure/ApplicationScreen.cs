@@ -22,7 +22,7 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         protected IMediator? Mediator { get;  }
         
         private bool _isBusy;
-        public bool IsBusy
+        public virtual bool IsBusy
         {
             get => _isBusy;
             set => Set(ref _isBusy, value, nameof(IsBusy));
