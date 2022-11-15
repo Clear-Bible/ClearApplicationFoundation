@@ -1,6 +1,7 @@
 ﻿
 using Autofac;
 using Caliburn.Micro;
+using ClearApplicationFoundation.LogHelpers;
 using ClearApplicationFoundation.ViewModels.Infrastructure;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -24,6 +25,8 @@ namespace ClearApplicationFoundation.Demo.ViewModels
         {
             CanOk = true;
             Title = "Startup Dialog";
+            
+            var logFilePath = IoC.Get<CaptureFilePathHook>();
         }
 
         private bool _canOk;

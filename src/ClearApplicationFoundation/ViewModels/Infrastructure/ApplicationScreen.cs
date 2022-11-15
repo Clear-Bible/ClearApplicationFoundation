@@ -21,7 +21,7 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         protected IEventAggregator? EventAggregator { get; }
         protected IMediator? Mediator { get;  }
         
-        protected bool _isBusy;
+        private bool _isBusy;
         public virtual bool IsBusy
         {
             get => _isBusy;
