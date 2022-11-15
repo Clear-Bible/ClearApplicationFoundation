@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Serilog.Extensions.Logging;
 using System.Linq;
 using ClearApplicationFoundation.Framework;
+using ClearApplicationFoundation.LogHelpers;
 using ClearApplicationFoundation.ViewModels;
 using ClearApplicationFoundation.ViewModels.Shell;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +46,8 @@ namespace ClearApplicationFoundation
             loggerFactory.AddProvider(new SerilogLoggerProvider());
             builder.RegisterInstance(loggerFactory).As<ILoggerFactory>().SingleInstance();
             builder.RegisterGeneric(typeof(Logger<>)).As(typeof(ILogger<>)).SingleInstance();
+
+            builder.RegisterType<CaptureFilePathHook>().AsSelf().SingleInstance();
         }
     }
 

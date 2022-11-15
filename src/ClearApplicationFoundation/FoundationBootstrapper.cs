@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using ClearApplicationFoundation.LogHelpers;
 
 namespace ClearApplicationFoundation
 {
@@ -31,6 +32,8 @@ namespace ClearApplicationFoundation
     }
     public class FoundationBootstrapper : BootstrapperBase
     {
+       
+
         protected IContainer? Container { get; private set; }
 
         protected ILogger<FoundationBootstrapper>? Logger { get; private set; }
@@ -285,9 +288,14 @@ namespace ClearApplicationFoundation
         // ReSharper disable once RedundantAssignment
         protected void SetupLogging(string logPath, LogEventLevel logLevel = LogEventLevel.Information, string outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] [{SourceContext}] {Message}{NewLine}{Exception}")
         {
+#if DEBUG
+            logLevel = LogEventLevel.Verbose;
+#endif
+
+            CaptureFilePathHook logFilePathHook = Container!.Resolve<CaptureFilePathHook>();
             var log = new LoggerConfiguration()
                 .MinimumLevel.Is(logLevel)
-                .WriteTo.File(logPath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day)
+                .WriteTo.File(logPath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day, hooks: logFilePathHook)
                 .WriteTo.Debug(outputTemplate: outputTemplate)
                 .CreateLogger();
 
@@ -297,7 +305,6 @@ namespace ClearApplicationFoundation
             Logger = Container!.Resolve<ILogger<FoundationBootstrapper>>();
 
             Logger.LogDebug($"Application logging has been configured.  Writing logs to '{logPath}'");
-            
         }
 
         protected override object GetInstance(Type service, string key)
