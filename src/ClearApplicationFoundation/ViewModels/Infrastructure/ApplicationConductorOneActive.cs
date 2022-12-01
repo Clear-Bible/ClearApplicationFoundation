@@ -87,4 +87,23 @@ public abstract class ApplicationConductorOneActive<T> : Conductor<T>.Collection
         }
     }
 
+    protected async Task<TViewModel?> ActivateItemAsync<TViewModel>(CancellationToken cancellationToken = default)
+        where TViewModel : Screen, T
+    {
+        // NOTE:  This is the hack to get OnViewAttached and OnViewReady methods to be called on conducted ViewModels.  Also note
+        //   OnViewLoaded is not called.
+
+        var viewModel = LifetimeScope!.Resolve<TViewModel>();
+
+        viewModel.Parent = this;
+        viewModel.ConductWith(this);
+
+        var view = ViewLocator.LocateForModel(this, null, null);
+        ViewModelBinder.Bind(viewModel, view, null);
+
+        await ActivateItemAsync(viewModel, cancellationToken);
+
+        return viewModel;
+    }
+
 }
