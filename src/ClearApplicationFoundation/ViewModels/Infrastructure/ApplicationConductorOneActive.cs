@@ -98,7 +98,7 @@ public abstract class ApplicationConductorOneActive<T> : Conductor<T>.Collection
         viewModel.Parent = this;
         viewModel.ConductWith(this);
 
-        var view = ViewLocator.LocateForModel(this, null, null);
+        var view = ViewLocator.LocateForModel(viewModel, null, null);
         ViewModelBinder.Bind(viewModel, view, null);
 
         await ActivateItemAsync(viewModel, cancellationToken);
