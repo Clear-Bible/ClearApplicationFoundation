@@ -105,4 +105,5 @@ public abstract class ApplicationConductorOneActive<T> : Conductor<T>.Collection
 
         return viewModel;
     }
+
 }

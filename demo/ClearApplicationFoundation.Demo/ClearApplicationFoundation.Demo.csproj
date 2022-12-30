@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
@@ -14,7 +14,7 @@
 	  <PackageReference Include="Dirkster.AvalonDock.Themes.Metro" Version="4.70.3" />
 	  <PackageReference Include="Dirkster.AvalonDock.Themes.VS2010" Version="4.70.3" />
 	  <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.70.3" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
   </ItemGroup>
 
   <ItemGroup>
