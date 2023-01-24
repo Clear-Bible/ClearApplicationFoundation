@@ -1,5 +1,5 @@
 ﻿
-robocopy $(TargetDir) $(SolutionDir)demo\ClearApplicationFoundation.Demo\bin\Debug\net6.0-windows $(TargetName).*
+robocopy $(TargetDir) $(SolutionDir)demo\ClearApplicationFoundation.Demo\bin\Debug\net7.0-windows $(TargetName).*
 
 exit 0
 
