@@ -19,6 +19,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using ClearApplicationFoundation.LogHelpers;
+using Serilog.Filters;
+using System.Xml.Linq;
 
 namespace ClearApplicationFoundation
 {
@@ -286,18 +288,32 @@ namespace ClearApplicationFoundation
 
 
         // ReSharper disable once RedundantAssignment
-        protected void SetupLogging(string logPath, LogEventLevel logLevel = LogEventLevel.Information, string outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] [{SourceContext}] {Message}{NewLine}{Exception}")
+        protected void SetupLogging(string logPath, LogEventLevel logLevel = LogEventLevel.Information, string outputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] [{SourceContext}] {Message}{NewLine}{Exception}", IEnumerable<string>? namespacesToExclude = null)
         {
 #if DEBUG
             logLevel = LogEventLevel.Verbose;
 #endif
 
             CaptureFilePathHook logFilePathHook = Container!.Resolve<CaptureFilePathHook>();
-            var log = new LoggerConfiguration()
+            var logConfiguration = new LoggerConfiguration()
                 .MinimumLevel.Is(logLevel)
-                .WriteTo.File(logPath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day, hooks: logFilePathHook)
-                .WriteTo.Debug(outputTemplate: outputTemplate)
-                .CreateLogger();
+                .WriteTo.File(logPath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day,
+                    hooks: logFilePathHook)
+                .WriteTo.Debug(outputTemplate: outputTemplate);
+               
+
+            //var namespaces = new[] { "Microsoft", "IdentityServer4" }; // I have a *lot* of these
+            if (namespacesToExclude != null)
+            {
+                foreach (var @namespace in namespacesToExclude)
+                {
+                    logConfiguration = logConfiguration.Filter.ByExcluding(Matching.FromSource(@namespace));
+                }
+            }
+          
+
+            var log = logConfiguration.CreateLogger();
+
 
             var loggerFactory = Container!.Resolve<ILoggerFactory>();
             loggerFactory.AddSerilog(log);
