@@ -8,11 +8,44 @@ using ClearApplicationFoundation.ViewModels.Infrastructure;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using System.Linq;
 using System.Reflection;
+using ClearApplicationFoundation.Demo.Services;
+using ClearApplicationFoundation.Demo.ViewModels.Help;
+using ClearApplicationFoundation.Services;
 using Module = Autofac.Module;
 using ShellViewModel = ClearApplicationFoundation.Demo.ViewModels.Shell.ShellViewModel;
 
 namespace ClearApplicationFoundation.Demo
 {
+
+    internal static class ContainerBuilderExtensions
+    {
+        public static void RegisterStartupDialogHelpDependencies(this ContainerBuilder builder)
+        {
+
+
+            builder.RegisterType<StartupHelpViewModel>().AsSelf();
+            builder.RegisterType<StartupHelpWelcomeViewModel>().As<IWorkflowStepViewModel>()
+                .Keyed<IWorkflowStepViewModel>("StartupHelp")
+                .WithMetadata("Order", 1);
+
+            builder.RegisterType<StartupHelpCompleteViewModel>().As<IWorkflowStepViewModel>()
+                .Keyed<IWorkflowStepViewModel>("StartupHelp")
+                .WithMetadata("Order", 2);
+        }
+
+        public static void RegisterStartupDialogDependencies(this ContainerBuilder builder)
+        {
+
+            builder.RegisterType<ProjectPickerViewModel>().As<IWorkflowStepViewModel>()
+                .Keyed<IWorkflowStepViewModel>("Startup")
+                .WithMetadata("Order", 1);
+
+            builder.RegisterType<ProjectSetupViewModel>().As<IWorkflowStepViewModel>()
+               .Keyed<IWorkflowStepViewModel>("Startup")
+                .WithMetadata("Order", 2);
+        }
+    }
+
     internal class DemoModule : Module
     {
         protected override void Load(ContainerBuilder builder)
@@ -43,9 +76,11 @@ namespace ClearApplicationFoundation.Demo
                 .AsSelf()
                 .InstancePerDependency();
 
-            builder.RegisterType<ProjectPickerViewModel>().As<IWorkflowStepViewModel>();
+            builder.RegisterType<LocalizationService>().As<ILocalizationService>().InstancePerDependency();
 
-            builder.RegisterType<ProjectSetupViewModel>().As<IWorkflowStepViewModel>();
+           
+            builder.RegisterStartupDialogDependencies();
+            builder.RegisterStartupDialogHelpDependencies();
         }
     }
 }

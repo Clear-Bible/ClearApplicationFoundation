@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using Autofac;
 using Caliburn.Micro;
 using ClearApplicationFoundation.LogHelpers;
@@ -7,6 +8,8 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Threading.Tasks;
+using ClearApplicationFoundation.Demo.ViewModels.Help;
+using ClearApplicationFoundation.Extensions;
 
 namespace ClearApplicationFoundation.Demo.ViewModels
 {
@@ -18,18 +21,30 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             await TryCloseAsync(false);
         }
 
-       
 
-        public StartupViewModel(INavigationService? navigationService, ILogger<StartupViewModel>? logger, IMediator? mediator, IEventAggregator? eventAggregator, ILifetimeScope? lifetimeScope) : 
+        public StartupHelpViewModel StartupHelpViewModel
+        {
+            get => startupHelpViewModel_;
+            set => Set(ref startupHelpViewModel_, value);
+        }
+
+
+        public StartupViewModel(StartupHelpViewModel startupHelpViewModel, INavigationService? navigationService, ILogger<StartupViewModel>? logger, IMediator? mediator, IEventAggregator? eventAggregator, ILifetimeScope? lifetimeScope) : 
             base(navigationService, logger, eventAggregator, mediator, lifetimeScope)
         {
             CanOk = true;
             Title = "Startup Dialog";
+            StartupHelpViewModel = startupHelpViewModel;
+
+            StartupHelpViewModel.IsVisible = true;
+         
             
             var logFilePath = IoC.Get<CaptureFilePathHook>();
         }
 
         private bool _canOk;
+        private StartupHelpViewModel startupHelpViewModel_;
+
         public bool CanOk
         {
             get => _canOk;
@@ -46,7 +61,7 @@ namespace ClearApplicationFoundation.Demo.ViewModels
             ExtraData = "flow";
             await base.OnInitializeAsync(cancellationToken);
 
-            var views = IoC.GetAll<IWorkflowStepViewModel>();
+            var views = LifetimeScope?.ResolveKeyedOrdered<IWorkflowStepViewModel>("Startup", "Order").ToArray();
 
             foreach (var view in views)
             {
@@ -58,8 +73,16 @@ namespace ClearApplicationFoundation.Demo.ViewModels
 
             EnableControls = true;
             await ActivateItemAsync(Steps[0], cancellationToken);
+
+            await ScreenExtensions.TryActivateAsync(StartupHelpViewModel, cancellationToken);
+
         }
 
         public object ExtraData { get; set; }
+
+        public void ShowHelp()
+        {
+            StartupHelpViewModel.IsVisible = true;
+        }
     }
 }

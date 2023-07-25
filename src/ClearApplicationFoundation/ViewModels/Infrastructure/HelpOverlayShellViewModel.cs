@@ -1,36 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using Autofac;
+﻿using Autofac;
 using Caliburn.Micro;
-using MediatR;
+using ClearApplicationFoundation.Services;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace ClearApplicationFoundation.ViewModels.Infrastructure
 {
-    public abstract  class WorkflowShellViewModel : Conductor<IWorkflowStepViewModel>.Collection.OneActive
+
+    public abstract class HelpOverlayShellViewModel: Conductor<IWorkflowStepViewModel>.Collection.OneActive
     {
         protected ILogger? Logger { get; set; }
-        public List<IWorkflowStepViewModel>? Steps { get; set; }
-        protected IEventAggregator? EventAggregator { get; set; }
-        protected INavigationService? NavigationService { get; set; }
-        protected IMediator? Mediator { get; set; }
+
         protected ILifetimeScope? LifetimeScope { get; set; }
 
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => Set(ref _isBusy, value);
-        }
+        protected IWorkflowStepViewModel? CurrentStep { get; set; }
 
-        private string? _title;
-        public string? Title
+        public List<IWorkflowStepViewModel>? Steps { get; set; }
+
+        public bool IsVisible
         {
-            get => _title;
-            set => Set(ref _title, value);
+            get => isVisible_;
+            set => Set(ref isVisible_, value);
         }
 
         private FlowDirection _windowFlowDirection = FlowDirection.LeftToRight;
@@ -48,7 +40,8 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         }
 
         private bool _enableControls;
-       
+        private bool isVisible_;
+
 
         public bool EnableControls
         {
@@ -60,34 +53,20 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             }
         }
 
-        protected WorkflowShellViewModel()
+        protected HelpOverlayShellViewModel()
         {
             // allows view models to be used in design-time mode.
         }
 
-        protected WorkflowShellViewModel(INavigationService? navigationService,  ILogger? logger, IEventAggregator? eventAggregator, IMediator? mediator, ILifetimeScope? lifetimeScope)
+        protected HelpOverlayShellViewModel(ILogger? logger, ILifetimeScope? lifetimeScope)
         {
-            Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator)); 
+
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            NavigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            LifetimeScope = lifetimeScope ?? throw new ArgumentNullException(nameof(lifetimeScope));
+            LifetimeScope = lifetimeScope ?? throw new ArgumentNullException(nameof(lifetimeScope)); ;
             Steps = new List<IWorkflowStepViewModel>();
         }
 
-        protected override Task OnActivateAsync(CancellationToken cancellationToken)
-        {
-            EventAggregator.SubscribeOnUIThread(this);
-            return base.OnActivateAsync(cancellationToken);
-        }
-
-        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
-        {
-            EventAggregator!.Unsubscribe(this);
-            return base.OnDeactivateAsync(close, cancellationToken);
-        }
-
-        protected IWorkflowStepViewModel? CurrentStep { get; set; }
+     
         protected override IWorkflowStepViewModel DetermineNextItemToActivate(IList<IWorkflowStepViewModel> list, int lastIndex)
         {
             var current = list[lastIndex];
@@ -112,4 +91,6 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
             return next;
         }
     }
+
+
 }

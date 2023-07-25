@@ -5,14 +5,28 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ClearApplicationFoundation.Demo.Views"
       xmlns:cm="http://caliburnmicro.com"
+      xmlns:viewModels="clr-namespace:ClearApplicationFoundation.Demo.ViewModels"
+      xmlns:controls="clr-namespace:ClearApplicationFoundation.Controls;assembly=ClearApplicationFoundation"
       mc:Ignorable="d" 
+      d:DataContext="{d:DesignInstance Type=viewModels:StartupViewModel}"
       d:DesignHeight="450" d:DesignWidth="800"
       Width="800"
       Height="400"
       Title="{Binding Title}">
+   <Page.Resources>
+       <BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></BoolToVisibilityConverter>
+   </Page.Resources>
 
     <Grid>
-        <ContentControl
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" x:Name="ShowHelp" Content="Show Help" Width="100" HorizontalAlignment="Right"></Button>
+        <ContentControl Grid.Row="1"
             cm:View.Model="{Binding ActiveItem}" />
+
+        <controls:HelpOverlay Grid.Row="0"  Grid.RowSpan="2" cm:View.Model="{Binding StartupHelpViewModel.ActiveItem}" Visibility="{Binding StartupHelpViewModel.IsVisible, Converter={StaticResource BoolToVisibilityConverter}}"></controls:HelpOverlay>
+
     </Grid>
 </Page>
