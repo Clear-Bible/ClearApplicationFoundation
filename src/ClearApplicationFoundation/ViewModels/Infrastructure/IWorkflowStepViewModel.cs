@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClearApplicationFoundation.ViewModels.Infrastructure
@@ -13,5 +14,7 @@ namespace ClearApplicationFoundation.ViewModels.Infrastructure
         Task MoveBackwards();
         Task MoveForwardsAction();
         Task MoveBackwardsAction();
+        Task Initialize(CancellationToken cancellationToken);
+        Task Reset(CancellationToken cancellationToken);
     }
 }

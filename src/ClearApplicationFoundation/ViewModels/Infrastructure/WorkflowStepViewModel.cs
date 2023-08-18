@@ -65,12 +65,22 @@ public abstract class WorkflowStepViewModel : ApplicationScreen, IWorkflowStepVi
         set => Set(ref _canMoveBackwards, value);
     }
 
+    public virtual async Task Initialize(CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
+    }
+
     public virtual async Task MoveForwardsAction()
     {
         await Task.CompletedTask;
     }
 
     public virtual async Task MoveBackwardsAction()
+    {
+        await Task.CompletedTask;
+    }
+
+    public virtual async Task Reset(CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
     }

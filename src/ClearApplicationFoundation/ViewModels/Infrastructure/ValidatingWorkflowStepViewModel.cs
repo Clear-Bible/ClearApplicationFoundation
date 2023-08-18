@@ -48,12 +48,22 @@ public abstract class ValidatingWorkflowStepViewModel<TEntity> : ValidatingAppli
     private bool _canMoveForwards;
     private bool _canMoveBackwards;
 
+    public virtual async Task Initialize(CancellationToken cancellationToken)
+    {
+        await Task.CompletedTask;
+    }
+
     public virtual async Task MoveForwardsAction()
     {
         await Task.CompletedTask;
     }
 
     public virtual async Task MoveBackwardsAction()
+    {
+        await Task.CompletedTask;
+    }
+
+    public virtual async Task Reset(CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
     }
