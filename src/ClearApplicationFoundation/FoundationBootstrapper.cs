@@ -88,6 +88,9 @@ namespace ClearApplicationFoundation
                 Application.Current.Shutdown(exitCode);
             }
 
+            mainWindow.MinHeight = 400;
+            mainWindow.MinWidth = 800;
+
             if (mainWindow is { IsVisible: true })
             {
                 mainWindow.Hide();
@@ -295,9 +298,12 @@ namespace ClearApplicationFoundation
 #endif
 
             CaptureFilePathHook logFilePathHook = Container!.Resolve<CaptureFilePathHook>();
+
+            // set to 150 MB limit on file size
             var logConfiguration = new LoggerConfiguration()
                 .MinimumLevel.Is(logLevel)
                 .WriteTo.File(logPath, outputTemplate: outputTemplate, rollingInterval: RollingInterval.Day,
+                    fileSizeLimitBytes: 104857600, rollOnFileSizeLimit: true, retainedFileCountLimit: 15,
                     hooks: logFilePathHook)
                 .WriteTo.Debug(outputTemplate: outputTemplate);
                
