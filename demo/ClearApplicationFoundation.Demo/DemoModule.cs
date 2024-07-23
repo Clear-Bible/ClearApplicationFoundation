@@ -6,6 +6,7 @@ using ClearApplicationFoundation.Extensions;
 using ClearApplicationFoundation.Framework;
 using ClearApplicationFoundation.ViewModels.Infrastructure;
 using MediatR.Extensions.Autofac.DependencyInjection;
+using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using System.Linq;
 using System.Reflection;
 using Module = Autofac.Module;
@@ -26,8 +27,14 @@ namespace ClearApplicationFoundation.Demo
             // Register validators from this assembly.
             builder.RegisterValidators(Assembly.GetExecutingAssembly());
 
-            // Register Mediator requests and handlers.
-            builder.RegisterMediatR(typeof(App).Assembly);
+			// Register Mediator requests and handlers.
+			var configuration = MediatRConfigurationBuilder
+				.Create(Assembly.GetExecutingAssembly())
+				.WithAllOpenGenericHandlerTypesRegistered()
+				.WithRegistrationScope(RegistrationScope.Scoped)
+				.Build();
+			builder.RegisterMediatR(configuration);
+			//builder.RegisterMediatR(typeof(App).Assembly);
 
             //builder.RegisterType<ProjectPickerView>().AsSelf();
 
