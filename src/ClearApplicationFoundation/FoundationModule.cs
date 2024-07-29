@@ -10,10 +10,11 @@ using ClearApplicationFoundation.ViewModels;
 using ClearApplicationFoundation.ViewModels.Shell;
 using Microsoft.Extensions.DependencyInjection;
 using ClearApplicationFoundation.ViewModels.Infrastructure;
+using System.Reflection;
 
 namespace ClearApplicationFoundation
 {
-    internal class FoundationModule : Module
+    internal class FoundationModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {
@@ -33,7 +34,11 @@ namespace ClearApplicationFoundation
             builder.RegisterType<WindowManager>().As<IWindowManager>().InstancePerLifetimeScope();
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().InstancePerLifetimeScope();
 
+
+           // MediatR.Extensions.Microsoft.DependencyInjection
             builder.RegisterMediatR(typeof(App).Assembly);
+
+            //builder.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             var frameSet = new FrameSet();
             builder.RegisterInstance(frameSet);
